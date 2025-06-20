@@ -1,4 +1,4 @@
-export type DTOLogin = {
-    readonly login: string,
+export class DTOLogin {
+    readonly login: string
     readonly password: string
 }

@@ -15,12 +15,22 @@ const prisma_service_1 = require("./prisma/prisma.service");
 const user_service_1 = require("./user/user.service");
 const time_service_1 = require("./time/time.service");
 const auth_module_1 = require("./auth/auth.module");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [user_module_1.UserModule, time_module_1.TimeModule, prisma_module_1.PrismaModule, auth_module_1.AuthModule],
+        imports: [
+            user_module_1.UserModule,
+            time_module_1.TimeModule,
+            prisma_module_1.PrismaModule,
+            auth_module_1.AuthModule,
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                envFilePath: './env'
+            })
+        ],
         providers: [prisma_service_1.PrismaService, user_service_1.UserService, time_service_1.TimeService]
     })
 ], AppModule);

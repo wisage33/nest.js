@@ -13,14 +13,16 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const bcrypt = require("bcrypt");
+const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
     prisma;
-    constructor(prisma) {
+    jwt;
+    constructor(prisma, jwt) {
         this.prisma = prisma;
+        this.jwt = jwt;
     }
     async signIn(userData) {
         const { login, password } = userData;
-        console.log(login);
         const dbUser = await this.prisma.user.findUnique({ where: { login } });
         if (!dbUser) {
             throw new common_1.NotFoundException("User not found");
@@ -29,14 +31,16 @@ let AuthService = class AuthService {
         if (!validPassword) {
             throw new common_1.UnauthorizedException("Password isn't valid");
         }
+        const payload = { sub: dbUser.id, login: dbUser.login };
         return {
-            user: dbUser
+            access_token: await this.jwt.signAsync(payload)
         };
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

@@ -16,6 +16,7 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const client_1 = require("@prisma/client");
+const auth_guard_1 = require("../auth/auth.guard");
 let UserController = class UserController {
     userService;
     constructor(userService) {
@@ -23,6 +24,9 @@ let UserController = class UserController {
     }
     async createUser(userData) {
         return this.userService.createUser(userData);
+    }
+    async getProfile(req) {
+        return req.user;
     }
 };
 exports.UserController = UserController;
@@ -33,6 +37,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createUser", null);
+__decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.Get)('me'),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getProfile", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

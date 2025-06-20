@@ -15,4 +15,5 @@ export declare class UserController {
         message: string;
         statusCode?: undefined;
     } | undefined>;
+    getProfile(req: any): Promise<any>;
 }

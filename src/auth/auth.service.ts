@@ -2,15 +2,18 @@ import { Injectable, Module, NotFoundException, UnauthorizedException } from '@n
 import { DTOLogin } from 'src/dto/login.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private jwt: JwtService
+    ) {}
 
     async signIn(userData: DTOLogin) {
 
         const { login, password } = userData
-        console.log(login)
         const dbUser = await this.prisma.user.findUnique({ where: { login } })
 
         if(!dbUser) {
@@ -23,8 +26,9 @@ export class AuthService {
             throw new UnauthorizedException("Password isn't valid")
         }
 
+        const payload = { sub: dbUser.id, login: dbUser.login }
         return {
-            user: dbUser
+            access_token: await this.jwt.signAsync(payload)
         }
     }
 }

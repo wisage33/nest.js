@@ -1,14 +1,11 @@
 import { DTOLogin } from 'src/dto/login.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
 export declare class AuthService {
     private prisma;
-    constructor(prisma: PrismaService);
+    private jwt;
+    constructor(prisma: PrismaService, jwt: JwtService);
     signIn(userData: DTOLogin): Promise<{
-        user: {
-            id: number;
-            login: string;
-            password: string;
-            createdAt: Date;
-        };
+        access_token: string;
     }>;
 }
