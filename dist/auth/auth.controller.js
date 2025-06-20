@@ -12,29 +12,28 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserController = void 0;
+exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
-const user_service_1 = require("./user.service");
-const client_1 = require("@prisma/client");
-let UserController = class UserController {
-    userService;
-    constructor(userService) {
-        this.userService = userService;
+const auth_service_1 = require("./auth.service");
+let AuthController = class AuthController {
+    authService;
+    constructor(authService) {
+        this.authService = authService;
     }
-    async createUser(userData) {
-        return this.userService.createUser(userData);
+    async signIn(userData) {
+        return await this.authService.signIn(userData);
     }
 };
-exports.UserController = UserController;
+exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Post)('create'),
+    (0, common_1.Post)('login'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "createUser", null);
-exports.UserController = UserController = __decorate([
-    (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService])
-], UserController);
-//# sourceMappingURL=user.controller.js.map
+], AuthController.prototype, "signIn", null);
+exports.AuthController = AuthController = __decorate([
+    (0, common_1.Controller)('auth'),
+    __metadata("design:paramtypes", [auth_service_1.AuthService])
+], AuthController);
+//# sourceMappingURL=auth.controller.js.map

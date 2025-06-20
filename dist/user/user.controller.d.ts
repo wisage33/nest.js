@@ -1,16 +1,18 @@
 import { UserService } from './user.service';
-type UserData = {
-    login: string;
-    password: string;
-};
+import { Prisma } from '@prisma/client';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
-    createUser(userData: UserData): Promise<{
+    createUser(userData: Prisma.UserCreateInput): Promise<{
         id: number;
         login: string;
         password: string;
         createdAt: Date;
-    }>;
+    } | {
+        statusCode: number;
+        message: string;
+    } | {
+        message: string;
+        statusCode?: undefined;
+    } | undefined>;
 }
-export {};

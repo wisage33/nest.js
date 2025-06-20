@@ -1,21 +1,37 @@
 import { Injectable, Module } from '@nestjs/common';
-import { User, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-
-@Module({
-    imports: [PrismaService]
-})
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
 
     constructor(private prisma: PrismaService) {}
 
-    async user(where: Prisma.UserWhereUniqueInput) {
-        return this.prisma.user.findUnique({ where, });
-    }
-
     async createUser(data: Prisma.UserCreateInput) {
-        return this.prisma.user.create({ data });
+        const hashedPassword = await bcrypt.hash(data.password, 10);
+        try {
+            return await this.prisma.user.create({
+            data: {
+                ...data,
+                password: hashedPassword
+            }
+        });
+        } catch(error) {
+            if(error instanceof Prisma.PrismaClientKnownRequestError) {
+                if(error.code = "P2002") {
+                    return {
+                        statusCode: 400,
+                        message: `Not unique: ${error.meta?.target}`
+                    }
+                }
+            }
+
+            if(error instanceof Prisma.PrismaClientUnknownRequestError) {
+                return {
+                    message: "Database error"
+                }
+            }
+        }
     }
 }

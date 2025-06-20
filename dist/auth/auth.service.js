@@ -9,46 +9,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
+exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const client_1 = require("@prisma/client");
 const prisma_service_1 = require("../prisma/prisma.service");
 const bcrypt = require("bcrypt");
-let UserService = class UserService {
+let AuthService = class AuthService {
     prisma;
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async createUser(data) {
-        const hashedPassword = await bcrypt.hash(data.password, 10);
-        try {
-            return await this.prisma.user.create({
-                data: {
-                    ...data,
-                    password: hashedPassword
-                }
-            });
+    async signIn(userData) {
+        const { login, password } = userData;
+        console.log(login);
+        const dbUser = await this.prisma.user.findUnique({ where: { login } });
+        if (!dbUser) {
+            throw new common_1.NotFoundException("User not found");
         }
-        catch (error) {
-            if (error instanceof client_1.Prisma.PrismaClientKnownRequestError) {
-                if (error.code = "P2002") {
-                    return {
-                        statusCode: 400,
-                        message: `Not unique: ${error.meta?.target}`
-                    };
-                }
-            }
-            if (error instanceof client_1.Prisma.PrismaClientUnknownRequestError) {
-                return {
-                    message: "Database error"
-                };
-            }
+        const validPassword = await bcrypt.compare(password, dbUser.password);
+        if (!validPassword) {
+            throw new common_1.UnauthorizedException("Password isn't valid");
         }
+        return {
+            user: dbUser
+        };
     }
 };
-exports.UserService = UserService;
-exports.UserService = UserService = __decorate([
+exports.AuthService = AuthService;
+exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], UserService);
-//# sourceMappingURL=user.service.js.map
+], AuthService);
+//# sourceMappingURL=auth.service.js.map
