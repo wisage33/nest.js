@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
-import { TimeModule } from './time/time.module';
+import { UserModule } from '../modules/user/user.module';
+import { TimeModule } from '../modules/time/time.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
-import { UserService } from './user/user.service';
-import { TimeService } from './time/time.service';
-import { AuthModule } from './auth/auth.module';
+import { UserService } from '../modules/user/user.service';
+import { TimeService } from '../modules/time/time.service';
+import { AuthModule } from '../modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
