@@ -1,5 +1,5 @@
 import { Injectable, Module, NotFoundException, UnauthorizedException } from '@nestjs/common';import { Prisma } from '@prisma/client';
-import { DTOLogin } from 'src/modules/user/user.dto/login.dto';
+import { loginDto } from 'src/modules/user/dto/login.dto';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -11,7 +11,7 @@ export class AuthService {
         private jwt: JwtService
     ) {}
 
-    async signIn(userData: DTOLogin) {
+    async signIn(userData: loginDto) {
 
         const { login, password } = userData
         const dbUser = await this.prisma.user.findUnique({ where: { login } })
