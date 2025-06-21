@@ -17,7 +17,7 @@ export class AuthService {
         const dbUser = await this.prisma.user.findUnique({ where: { login } })
 
         if(!dbUser) {
-            throw new NotFoundException("User not found")
+            throw new NotFoundException()
         }
 
         const validPassword = await bcrypt.compare(password, dbUser.password)
@@ -26,7 +26,7 @@ export class AuthService {
             throw new UnauthorizedException("Password isn't valid")
         }
 
-        const payload = { sub: dbUser.id, login: dbUser.login }
+        const payload = { id: dbUser.id, login: dbUser.login }
         return {
             access_token: await this.jwt.signAsync(payload)
         }

@@ -10,6 +10,7 @@ async function bootstrap() {
         .setTitle('Test nestjs-prisma')
         .setDescription('At first project on Nest.js')
         .setVersion('0.1')
+        .addBearerAuth()
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('docs', app, document);

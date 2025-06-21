@@ -10,18 +10,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginDto = void 0;
+const openapi = require("@nestjs/swagger");
 const swagger_1 = require("@nestjs/swagger");
 class loginDto {
     login;
     password;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { login: { required: true, type: () => String }, password: { required: true, type: () => String } };
+    }
 }
 exports.loginDto = loginDto;
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, swagger_1.ApiProperty)({
+        minimum: 0,
+        default: 0,
+        example: "user",
+        type: String
+    }),
     __metadata("design:type", String)
 ], loginDto.prototype, "login", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, swagger_1.ApiProperty)({
+        minimum: 0,
+        default: 0,
+        example: "12345",
+        type: String
+    }),
     __metadata("design:type", String)
 ], loginDto.prototype, "password", void 0);
 //# sourceMappingURL=login.dto.js.map

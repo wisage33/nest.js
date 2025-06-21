@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
+const swagger_1 = require("@nestjs/swagger");
 let AuthGuard = class AuthGuard {
     jwt;
     constructor(jwt) {
@@ -39,6 +40,7 @@ let AuthGuard = class AuthGuard {
 };
 exports.AuthGuard = AuthGuard;
 exports.AuthGuard = AuthGuard = __decorate([
+    (0, swagger_1.ApiBasicAuth)(),
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_1.JwtService])
 ], AuthGuard);

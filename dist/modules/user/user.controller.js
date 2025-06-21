@@ -13,10 +13,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
+const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const client_1 = require("@prisma/client");
 const auth_guard_1 = require("../auth/auth.guard");
+const swagger_1 = require("@nestjs/swagger");
 let UserController = class UserController {
     userService;
     constructor(userService) {
@@ -31,7 +33,28 @@ let UserController = class UserController {
 };
 exports.UserController = UserController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: "Create new user" }),
+    (0, swagger_1.ApiBody)({
+        description: "Create a new user",
+        examples: {
+            example: {
+                value: {
+                    login: "user",
+                    password: "12345"
+                }
+            }
+        }
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        description: "User succesfull create"
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: "Bad request"
+    }),
     (0, common_1.Post)('create'),
+    openapi.ApiResponse({ status: 201, type: Object }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -40,6 +63,25 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)('me'),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: "Get user info" }),
+    (0, swagger_1.ApiResponse)({
+        description: "User info",
+        status: 200,
+        schema: {
+            example: {
+                id: 1,
+                login: "user",
+                "iat": 1750540157,
+                "exp": 1750540217
+            }
+        }
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 400,
+        description: "Unauthorized"
+    }),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

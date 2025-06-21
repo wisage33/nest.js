@@ -20,6 +20,9 @@ let UserService = class UserService {
         this.prisma = prisma;
     }
     async createUser(data) {
+        if (!data) {
+            throw new common_1.BadRequestException();
+        }
         const hashedPassword = await bcrypt.hash(data.password, 10);
         try {
             return await this.prisma.user.create({

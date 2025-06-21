@@ -25,13 +25,13 @@ let AuthService = class AuthService {
         const { login, password } = userData;
         const dbUser = await this.prisma.user.findUnique({ where: { login } });
         if (!dbUser) {
-            throw new common_1.NotFoundException("User not found");
+            throw new common_1.NotFoundException();
         }
         const validPassword = await bcrypt.compare(password, dbUser.password);
         if (!validPassword) {
             throw new common_1.UnauthorizedException("Password isn't valid");
         }
-        const payload = { sub: dbUser.id, login: dbUser.login };
+        const payload = { id: dbUser.id, login: dbUser.login };
         return {
             access_token: await this.jwt.signAsync(payload)
         };

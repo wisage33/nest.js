@@ -1,8 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ApiBasicAuth } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 
+@ApiBasicAuth()
 @Injectable()
 export class AuthGuard implements CanActivate {
 
