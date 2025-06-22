@@ -1,9 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { loginDto } from 'src/modules/user/dto/login.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { NotFoundError } from 'rxjs';
-import { error } from 'console';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -24,7 +23,21 @@ export class AuthController {
     }
   })
   @Post('login')
-  async signIn(@Body() userData: loginDto) {
-    return await this.authService.signIn(userData);
+  async signIn(@Body() userData: loginDto, @Res({ passthrough: true }) res: Response) {
+    const tokens = await this.authService.signIn(userData);
+
+    res.cookie('refresh_token', tokens.refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
+    });
+
+    return { access_token: tokens.access_token };
+  }
+
+  @Post('refresh')
+  async refreshTokens(@Body() dto, @Req() req: Request) {
+    const refresh_token = req.cookies['refresh_token'];
+    return this.authService.refreshToken(refresh_token, dto);
   }
 }

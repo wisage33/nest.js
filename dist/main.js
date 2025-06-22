@@ -3,9 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
 const swagger_1 = require("@nestjs/swagger");
+const CookieParser = require("cookie-parser");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableShutdownHooks();
+    app.use(CookieParser());
     const config = new swagger_1.DocumentBuilder()
         .setTitle('Test nestjs-prisma')
         .setDescription('At first project on Nest.js')

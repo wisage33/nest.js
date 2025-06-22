@@ -8,6 +8,7 @@ export declare class UserService {
         login: string;
         password: string;
         createdAt: Date;
+        refreshToken: string | null;
     } | {
         statusCode: number;
         message: string;
