@@ -9,12 +9,6 @@ export declare class UserController {
         password: string;
         createdAt: Date;
         refreshToken: string | null;
-    } | {
-        statusCode: number;
-        message: string;
-    } | {
-        message: string;
-        statusCode?: undefined;
-    } | undefined>;
+    }>;
     getProfile(req: any): Promise<any>;
 }

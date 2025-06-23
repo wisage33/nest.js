@@ -16,12 +16,14 @@ const user_service_1 = require("./modules/user/user.service");
 const time_service_1 = require("./modules/time/time.service");
 const auth_module_1 = require("./modules/auth/auth.module");
 const config_1 = require("@nestjs/config");
+const core_module_1 = require("./core/core.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            core_module_1.CoreModule,
             user_module_1.UserModule,
             time_module_1.TimeModule,
             prisma_module_1.PrismaModule,

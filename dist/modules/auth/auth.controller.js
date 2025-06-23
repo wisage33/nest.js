@@ -16,7 +16,7 @@ exports.AuthController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const login_dto_1 = require("../user/dto/login.dto");
+const login_dto_1 = require("./dto/login.dto");
 const swagger_1 = require("@nestjs/swagger");
 let AuthController = class AuthController {
     authService;

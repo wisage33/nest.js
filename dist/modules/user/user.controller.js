@@ -54,7 +54,7 @@ __decorate([
         description: "Bad request"
     }),
     (0, common_1.Post)('create'),
-    openapi.ApiResponse({ status: 201, type: Object }),
+    openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

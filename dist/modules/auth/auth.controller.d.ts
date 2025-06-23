@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { loginDto } from 'src/modules/user/dto/login.dto';
+import { loginDto } from 'src/modules/auth/dto/login.dto';
 import { Request, Response } from 'express';
 export declare class AuthController {
     private readonly authService;

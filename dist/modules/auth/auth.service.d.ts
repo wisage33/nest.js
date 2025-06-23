@@ -1,7 +1,7 @@
-import { loginDto } from 'src/modules/user/dto/login.dto';
+import { loginDto } from 'src/modules/auth/dto/login.dto';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { TokenResponseDTO } from './dto/TokenResponseDTO';
+import { TokenResponseDTO } from './dto/token.response.dto';
 export declare class AuthService {
     private prisma;
     private jwt;
