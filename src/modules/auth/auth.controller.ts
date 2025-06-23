@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { loginDto } from 'src/modules/auth/dto/login.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -35,9 +35,9 @@ export class AuthController {
     return { access_token: tokens.access_token };
   }
 
-  @Post('refresh')
-  async refreshTokens(@Body() dto, @Req() req: Request) {
+  @Get('refresh')
+  async refreshTokens(@Req() req: Request) {
     const refresh_token = req.cookies['refresh_token'];
-    return this.authService.refreshToken(refresh_token, dto);
+    return this.authService.refreshToken(refresh_token);
   }
 }

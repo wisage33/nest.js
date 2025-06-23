@@ -32,9 +32,9 @@ let AuthController = class AuthController {
         });
         return { access_token: tokens.access_token };
     }
-    async refreshTokens(dto, req) {
+    async refreshTokens(req) {
         const refresh_token = req.cookies['refresh_token'];
-        return this.authService.refreshToken(refresh_token, dto);
+        return this.authService.refreshToken(refresh_token);
     }
 };
 exports.AuthController = AuthController;
@@ -62,12 +62,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
 __decorate([
-    (0, common_1.Post)('refresh'),
-    openapi.ApiResponse({ status: 201 }),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Req)()),
+    (0, common_1.Get)('refresh'),
+    openapi.ApiResponse({ status: 200 }),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "refreshTokens", null);
 exports.AuthController = AuthController = __decorate([

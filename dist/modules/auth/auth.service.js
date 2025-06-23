@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const prisma_service_1 = require("../../core/prisma/prisma.service");
 const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
+const user_repository_1 = require("../../core/user/user.repository");
 let AuthService = class AuthService {
     prisma;
     jwt;
@@ -23,7 +23,7 @@ let AuthService = class AuthService {
     }
     async signIn(userData) {
         const { login, password } = userData;
-        const dbUser = await this.prisma.user.findUnique({ where: { login } });
+        const dbUser = await this.prisma.findUnique(login);
         if (!dbUser) {
             throw new common_1.NotFoundException();
         }
@@ -36,10 +36,7 @@ let AuthService = class AuthService {
         const payload = { id: dbUser.id, login: dbUser.login };
         const tokens = this.generateTokens(payload.id, payload.login);
         const hashedRefreshToken = await bcrypt.hash((await tokens).refresh_token, 10);
-        await this.prisma.user.update({
-            where: { id: dbUser.id },
-            data: { refreshToken: hashedRefreshToken }
-        });
+        await this.prisma.update(login, { refreshToken: hashedRefreshToken });
         return tokens;
     }
     async generateTokens(userId, login) {
@@ -57,26 +54,28 @@ let AuthService = class AuthService {
             refresh_token
         };
     }
-    async refreshToken(refresh_token, userId) {
+    async refreshToken(refresh_token) {
         const payload = this.jwt.decode(refresh_token);
-        const dbUser = await this.prisma.user.findUnique({ where: { id: payload.id } });
+        const dbUser = await this.prisma.findUnique(payload.login);
         if (!dbUser || !dbUser.refreshToken) {
             throw new common_1.NotFoundException('Refresh token not found');
         }
-        const isValidUser = await bcrypt.compare(refresh_token, dbUser.refreshToken);
+        ;
+        const isValidToken = await bcrypt.compare(refresh_token, dbUser.refreshToken);
+        if (!isValidToken) {
+            throw new common_1.UnauthorizedException();
+        }
+        ;
         const tokens = await this.generateTokens(dbUser.id, dbUser.login);
         const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, 10);
-        await this.prisma.user.update({
-            where: { id: dbUser.id },
-            data: { refreshToken: hashedRefreshToken }
-        });
+        await this.prisma.update(payload.login, { refreshToken: hashedRefreshToken });
         return { acces_token: tokens.access_token };
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+    __metadata("design:paramtypes", [user_repository_1.UserRepository,
         jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

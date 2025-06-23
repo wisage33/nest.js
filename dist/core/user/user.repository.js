@@ -26,8 +26,14 @@ let UserRepository = class UserRepository {
         });
     }
     ;
-    async findUnique(userId) {
-        return await this.prismaService.user.findUnique({ where: { id: userId } });
+    async findUnique(login) {
+        return await this.prismaService.user.findUnique({ where: { login } });
+    }
+    async update(login, data) {
+        return await this.prismaService.user.update({
+            where: { login },
+            data: { ...data }
+        });
     }
 };
 exports.UserRepository = UserRepository;

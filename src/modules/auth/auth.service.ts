@@ -4,18 +4,20 @@ import { PrismaService } from 'src/core/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { TokenResponseDTO } from './dto/token.response.dto';
+import { UserRepository } from 'src/core/user/user.repository';
+import { UserUpdateDto } from 'src/core/dto/user.update.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
-        private prisma: PrismaService,
+        private readonly prisma: UserRepository,
         private jwt: JwtService,
     ) {}
 
     async signIn(userData: loginDto): Promise<TokenResponseDTO> {
 
         const { login, password } = userData;
-        const dbUser = await this.prisma.user.findUnique({ where: { login } });
+        const dbUser = await this.prisma.findUnique(login);
         if(!dbUser) {
             throw new NotFoundException()
         };
@@ -30,10 +32,7 @@ export class AuthService {
         const tokens = this.generateTokens(payload.id, payload.login);
 
         const hashedRefreshToken = await bcrypt.hash((await tokens).refresh_token, 10);
-        await this.prisma.user.update({
-            where: { id: dbUser.id },
-            data: { refreshToken: hashedRefreshToken }
-        })
+        await this.prisma.update(login, { refreshToken: hashedRefreshToken })
 
         return tokens;
     }
@@ -56,22 +55,22 @@ export class AuthService {
         }
     }
 
-    async refreshToken(refresh_token, userId) {
-        const payload = this.jwt.decode(refresh_token)
-        const dbUser = await this.prisma.user.findUnique({ where: { id: payload.id }})
+    async refreshToken(refresh_token: string) {
+        const payload = this.jwt.decode(refresh_token);
+        const dbUser = await this.prisma.findUnique(payload.login);
         if(!dbUser || !dbUser.refreshToken) {
             throw new NotFoundException('Refresh token not found');
-        }
+        };
 
-        const isValidUser = await bcrypt.compare(refresh_token, dbUser.refreshToken)
+        const isValidToken = await bcrypt.compare(refresh_token, dbUser.refreshToken)
+        if(!isValidToken) {
+            throw new UnauthorizedException();
+        };
 
         const tokens = await this.generateTokens(dbUser.id, dbUser.login);
         const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, 10);
-        await this.prisma.user.update({
-            where: { id: dbUser.id },
-            data: { refreshToken: hashedRefreshToken }
-        })
+        await this.prisma.update(payload.login, { refreshToken: hashedRefreshToken });
 
-        return { acces_token: tokens.access_token }
+        return { acces_token: tokens.access_token };
     }
 }
