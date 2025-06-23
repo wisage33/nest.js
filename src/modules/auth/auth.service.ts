@@ -1,23 +1,22 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { loginDto } from 'src/modules/auth/dto/login.dto';
-import { PrismaService } from 'src/core/prisma/prisma.service';
+import { LoginDto } from 'src/modules/auth/dto/login.dto';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
-import { TokenResponseDTO } from './dto/token.response.dto';
-import { UserRepository } from 'src/core/user/user.repository';
-import { UserUpdateDto } from 'src/core/dto/user.update.dto';
+import { TokenResponseDTO } from './dto/token-response.dto';
+import { UserRepository } from 'src/modules/user/repository/user.repository';
+import { JwtRepository } from './repository/jwt/jwt.service';
+import { Payload } from './dto/payload.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly prisma: UserRepository,
-        private jwt: JwtService,
+        private readonly userRepository: UserRepository,
+        private readonly jwtRepository: JwtRepository,
     ) {}
 
-    async signIn(userData: loginDto): Promise<TokenResponseDTO> {
+    async signIn(loginDto: LoginDto): Promise<TokenResponseDTO> {
 
-        const { login, password } = userData;
-        const dbUser = await this.prisma.findUnique(login);
+        const { login, password } = loginDto;
+        const dbUser = await this.userRepository.findUnique({ login });
         if(!dbUser) {
             throw new NotFoundException()
         };
@@ -28,25 +27,19 @@ export class AuthService {
             throw new UnauthorizedException("Password isn't valid")
         };
 
-        const payload = { id: dbUser.id, login: dbUser.login };
-        const tokens = this.generateTokens(payload.id, payload.login);
+        const payload = { sub: dbUser.id };
+        const tokens = this.generateTokens(payload);
 
         const hashedRefreshToken = await bcrypt.hash((await tokens).refresh_token, 10);
-        await this.prisma.update(login, { refreshToken: hashedRefreshToken })
+        await this.userRepository.update({ id: payload.sub }, { refreshToken: hashedRefreshToken })
 
         return tokens;
     }
 
-    async generateTokens(userId: number, login: string) {
-        const payload = { id: userId, login };
-
-        const [ access_token, refresh_token ] = await Promise.all([
-            this.jwt.signAsync(payload, {
-                "expiresIn": "15m"
-            }),
-            this.jwt.signAsync(payload, {
-                "expiresIn": "7d"
-            }),
+    async generateTokens(payload: Payload) {
+        const [access_token, refresh_token] = await Promise.all([
+            this.jwtRepository.signAsync(payload, "15m"),
+            this.jwtRepository.signAsync(payload, "7d")
         ])
 
         return {
@@ -55,22 +48,25 @@ export class AuthService {
         }
     }
 
-    async refreshToken(refresh_token: string) {
-        const payload = this.jwt.decode(refresh_token);
-        const dbUser = await this.prisma.findUnique(payload.login);
+    async refreshToken(refreshToken: string) {
+        const {sub, payload} = this.jwtRepository.decode(refreshToken);
+        const dbUser = await this.userRepository.findUnique({ id: sub });
         if(!dbUser || !dbUser.refreshToken) {
             throw new NotFoundException('Refresh token not found');
         };
 
-        const isValidToken = await bcrypt.compare(refresh_token, dbUser.refreshToken)
+        const isValidToken = await bcrypt.compare(refreshToken, dbUser.refreshToken)
         if(!isValidToken) {
             throw new UnauthorizedException();
         };
 
-        const tokens = await this.generateTokens(dbUser.id, dbUser.login);
+        const tokens = await this.generateTokens({ sub });
         const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, 10);
-        await this.prisma.update(payload.login, { refreshToken: hashedRefreshToken });
+        await this.userRepository.update({ id: sub }, { refreshToken: hashedRefreshToken });
 
-        return { acces_token: tokens.access_token };
+        return {
+            access_token: tokens.access_token,
+            refresh_token: tokens.refresh_token
+        };
     }
 }

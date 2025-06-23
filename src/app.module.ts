@@ -7,11 +7,9 @@ import { UserService } from './modules/user/user.service';
 import { TimeService } from './modules/time/time.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { CoreModule } from './core/core.module';
 
 @Module({
   imports: [
-    CoreModule,
     UserModule,
     TimeModule,
     PrismaModule,

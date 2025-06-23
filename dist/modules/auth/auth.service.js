@@ -12,18 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
-const jwt_1 = require("@nestjs/jwt");
-const user_repository_1 = require("../../core/user/user.repository");
+const user_repository_1 = require("../user/repository/user.repository");
+const jwt_service_1 = require("./repository/jwt/jwt.service");
 let AuthService = class AuthService {
-    prisma;
-    jwt;
-    constructor(prisma, jwt) {
-        this.prisma = prisma;
-        this.jwt = jwt;
+    userRepository;
+    jwtRepository;
+    constructor(userRepository, jwtRepository) {
+        this.userRepository = userRepository;
+        this.jwtRepository = jwtRepository;
     }
-    async signIn(userData) {
-        const { login, password } = userData;
-        const dbUser = await this.prisma.findUnique(login);
+    async signIn(loginDto) {
+        const { login, password } = loginDto;
+        const dbUser = await this.userRepository.findUnique({ login });
         if (!dbUser) {
             throw new common_1.NotFoundException();
         }
@@ -33,49 +33,47 @@ let AuthService = class AuthService {
             throw new common_1.UnauthorizedException("Password isn't valid");
         }
         ;
-        const payload = { id: dbUser.id, login: dbUser.login };
-        const tokens = this.generateTokens(payload.id, payload.login);
+        const payload = { sub: dbUser.id };
+        const tokens = this.generateTokens(payload);
         const hashedRefreshToken = await bcrypt.hash((await tokens).refresh_token, 10);
-        await this.prisma.update(login, { refreshToken: hashedRefreshToken });
+        await this.userRepository.update({ id: payload.sub }, { refreshToken: hashedRefreshToken });
         return tokens;
     }
-    async generateTokens(userId, login) {
-        const payload = { id: userId, login };
+    async generateTokens(payload) {
         const [access_token, refresh_token] = await Promise.all([
-            this.jwt.signAsync(payload, {
-                "expiresIn": "15m"
-            }),
-            this.jwt.signAsync(payload, {
-                "expiresIn": "7d"
-            }),
+            this.jwtRepository.signAsync(payload, "15m"),
+            this.jwtRepository.signAsync(payload, "7d")
         ]);
         return {
             access_token,
             refresh_token
         };
     }
-    async refreshToken(refresh_token) {
-        const payload = this.jwt.decode(refresh_token);
-        const dbUser = await this.prisma.findUnique(payload.login);
+    async refreshToken(refreshToken) {
+        const { sub, payload } = this.jwtRepository.decode(refreshToken);
+        const dbUser = await this.userRepository.findUnique({ id: sub });
         if (!dbUser || !dbUser.refreshToken) {
             throw new common_1.NotFoundException('Refresh token not found');
         }
         ;
-        const isValidToken = await bcrypt.compare(refresh_token, dbUser.refreshToken);
+        const isValidToken = await bcrypt.compare(refreshToken, dbUser.refreshToken);
         if (!isValidToken) {
             throw new common_1.UnauthorizedException();
         }
         ;
-        const tokens = await this.generateTokens(dbUser.id, dbUser.login);
+        const tokens = await this.generateTokens({ sub });
         const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, 10);
-        await this.prisma.update(payload.login, { refreshToken: hashedRefreshToken });
-        return { acces_token: tokens.access_token };
+        await this.userRepository.update({ id: sub }, { refreshToken: hashedRefreshToken });
+        return {
+            access_token: tokens.access_token,
+            refresh_token: tokens.refresh_token
+        };
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_repository_1.UserRepository,
-        jwt_1.JwtService])
+        jwt_service_1.JwtRepository])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

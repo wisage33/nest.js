@@ -12,19 +12,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
-const user_repository_1 = require("../../core/user/user.repository");
+const user_repository_1 = require("./repository/user.repository");
 let UserService = class UserService {
-    prisma;
-    constructor(prisma) {
-        this.prisma = prisma;
+    userRepository;
+    constructor(userRepository) {
+        this.userRepository = userRepository;
     }
     async createUser(data) {
         if (!data) {
             throw new common_1.BadRequestException();
         }
-        const hashedPassword = await bcrypt.hash(data.password, 10);
-        return this.prisma.create({
-            ...data,
+        const { login, password } = data;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        return this.userRepository.create({
+            login,
             password: hashedPassword
         });
     }

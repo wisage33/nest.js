@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Prisma } from '@prisma/client';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
 import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiParam, ApiProperty, ApiResponse } from '@nestjs/swagger';
+import { UserDto } from './dto/user.dto';
 
 
 @Controller('user')
@@ -30,8 +30,8 @@ export class UserController {
     description: "Bad request"
   })
   @Post('create')
-  async createUser(@Body() userData: Prisma.UserCreateInput) {
-    return this.userService.createUser(userData);
+  async createUser(@Body() UserDto: UserDto) {
+    return this.userService.createUser(UserDto);
   }
 
   @UseGuards(AuthGuard)

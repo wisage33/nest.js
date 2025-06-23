@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TimeService = void 0;
 const common_1 = require("@nestjs/common");
 let TimeService = class TimeService {
-    Time() {
+    time() {
         return new Date();
     }
 };

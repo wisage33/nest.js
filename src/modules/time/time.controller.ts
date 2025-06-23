@@ -7,6 +7,6 @@ export class TimeController {
 
   @Get()
   getTime() {
-    return this.timeService.Time();
+    return this.timeService.time();
   }
 }

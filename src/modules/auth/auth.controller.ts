@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { loginDto } from 'src/modules/auth/dto/login.dto';
+import { LoginDto } from 'src/modules/auth/dto/login.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
@@ -23,8 +23,8 @@ export class AuthController {
     }
   })
   @Post('login')
-  async signIn(@Body() userData: loginDto, @Res({ passthrough: true }) res: Response) {
-    const tokens = await this.authService.signIn(userData);
+  async signIn(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
+    const tokens = await this.authService.signIn(loginDto);
 
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
@@ -36,8 +36,14 @@ export class AuthController {
   }
 
   @Get('refresh')
-  async refreshTokens(@Req() req: Request) {
+  async refreshTokens(@Req() req: Request, @Res({ passthrough: true}) res: Response) {
     const refresh_token = req.cookies['refresh_token'];
-    return this.authService.refreshToken(refresh_token);
+    
+    const tokens = await this.authService.refreshToken(refresh_token);
+    res.cookie('refresh_token', tokens.refresh_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
+    });
   }
 }

@@ -23,8 +23,8 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async signIn(userData, res) {
-        const tokens = await this.authService.signIn(userData);
+    async signIn(loginDto, res) {
+        const tokens = await this.authService.signIn(loginDto);
         res.cookie('refresh_token', tokens.refresh_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -32,9 +32,14 @@ let AuthController = class AuthController {
         });
         return { access_token: tokens.access_token };
     }
-    async refreshTokens(req) {
+    async refreshTokens(req, res) {
         const refresh_token = req.cookies['refresh_token'];
-        return this.authService.refreshToken(refresh_token);
+        const tokens = await this.authService.refreshToken(refresh_token);
+        res.cookie('refresh_token', tokens.refresh_token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict'
+        });
     }
 };
 exports.AuthController = AuthController;
@@ -58,15 +63,16 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.loginDto, Object]),
+    __metadata("design:paramtypes", [login_dto_1.LoginDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
 __decorate([
     (0, common_1.Get)('refresh'),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "refreshTokens", null);
 exports.AuthController = AuthController = __decorate([

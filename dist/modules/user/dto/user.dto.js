@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userDto = void 0;
+exports.UserDto = void 0;
 const openapi = require("@nestjs/swagger");
-class userDto {
+class UserDto {
     login;
     password;
     constructor(login, password) {
@@ -13,5 +13,5 @@ class userDto {
         return {};
     }
 }
-exports.userDto = userDto;
+exports.UserDto = UserDto;
 //# sourceMappingURL=user.dto.js.map

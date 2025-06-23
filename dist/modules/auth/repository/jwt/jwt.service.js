@@ -9,29 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TimeController = void 0;
-const openapi = require("@nestjs/swagger");
+exports.JwtRepository = void 0;
 const common_1 = require("@nestjs/common");
-const time_service_1 = require("./time.service");
-let TimeController = class TimeController {
-    timeService;
-    constructor(timeService) {
-        this.timeService = timeService;
+const jwt_1 = require("@nestjs/jwt");
+let JwtRepository = class JwtRepository {
+    jwtService;
+    constructor(jwtService) {
+        this.jwtService = jwtService;
     }
-    getTime() {
-        return this.timeService.time();
+    decode(payload) {
+        return this.jwtService.decode(payload);
+    }
+    signAsync(payload, expiresIn) {
+        return this.jwtService.signAsync(payload, {
+            expiresIn
+        });
+    }
+    verifyAsync(payload) {
+        return this.jwtService.verifyAsync(payload);
     }
 };
-exports.TimeController = TimeController;
-__decorate([
-    (0, common_1.Get)(),
-    openapi.ApiResponse({ status: 200, type: Date }),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], TimeController.prototype, "getTime", null);
-exports.TimeController = TimeController = __decorate([
-    (0, common_1.Controller)('time'),
-    __metadata("design:paramtypes", [time_service_1.TimeService])
-], TimeController);
-//# sourceMappingURL=time.controller.js.map
+exports.JwtRepository = JwtRepository;
+exports.JwtRepository = JwtRepository = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [jwt_1.JwtService])
+], JwtRepository);
+//# sourceMappingURL=jwt.service.js.map
