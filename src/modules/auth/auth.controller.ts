@@ -24,26 +24,29 @@ export class AuthController {
   })
   @Post('login')
   async signIn(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
-    const tokens = await this.authService.signIn(loginDto);
+    const {access_token, refresh_token } = await this.authService.signIn(loginDto);
 
-    res.cookie('refresh_token', tokens.refresh_token, {
+    res.cookie('refresh_token', refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict'
     });
 
-    return { access_token: tokens.access_token };
+    return { access_token };
   }
 
   @Get('refresh')
   async refreshTokens(@Req() req: Request, @Res({ passthrough: true}) res: Response) {
-    const refresh_token = req.cookies['refresh_token'];
-    
-    const tokens = await this.authService.refreshToken(refresh_token);
-    res.cookie('refresh_token', tokens.refresh_token, {
+    const refreshToken = req.cookies['refresh_token'];
+
+    const currentTokens = await this.authService.refreshTokens(refreshToken);
+    res.cookie('refresh_token', currentTokens.refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict'
     });
+    return {
+      access_token: currentTokens.access_token
+    }
   }
 }

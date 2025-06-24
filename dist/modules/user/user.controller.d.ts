@@ -4,9 +4,9 @@ export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
     userCreate(userCreateDto: UserCreateDto): Promise<{
-        id: number;
         login: string;
         password: string;
+        id: number;
         createdAt: Date;
         refreshToken: string | null;
     }>;

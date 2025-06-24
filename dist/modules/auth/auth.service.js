@@ -14,26 +14,19 @@ const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
 const user_repository_1 = require("../user/repository/user.repository");
 const jwt_service_1 = require("./services/jwt/jwt.service");
+const auth_validator_service_1 = require("./services/validator/auth-validator.service");
 let AuthService = class AuthService {
     userRepository;
     authJwtService;
-    constructor(userRepository, authJwtService) {
+    authValidator;
+    constructor(userRepository, authJwtService, authValidator) {
         this.userRepository = userRepository;
         this.authJwtService = authJwtService;
+        this.authValidator = authValidator;
     }
     async signIn(loginDto) {
-        const { login, password } = loginDto;
-        const dbUser = await this.userRepository.findUnique({ login });
-        if (!dbUser) {
-            throw new common_1.NotFoundException();
-        }
-        ;
-        const validPassword = await bcrypt.compare(password, dbUser.password);
-        if (!validPassword) {
-            throw new common_1.UnauthorizedException("Password isn't valid");
-        }
-        ;
-        const payload = { sub: dbUser.id };
+        const user = await this.authValidator.validateCredentials(loginDto);
+        const payload = { sub: user.id };
         const tokens = this.generateTokens(payload);
         const hashedRefreshToken = await bcrypt.hash((await tokens).refresh_token, 10);
         await this.userRepository.update({ id: payload.sub }, { refreshToken: hashedRefreshToken });
@@ -49,18 +42,8 @@ let AuthService = class AuthService {
             refresh_token
         };
     }
-    async refreshToken(refreshToken) {
-        const { sub, payload } = this.authJwtService.decode(refreshToken);
-        const dbUser = await this.userRepository.findUnique({ id: sub });
-        if (!dbUser || !dbUser.refreshToken) {
-            throw new common_1.NotFoundException('Refresh token not found');
-        }
-        ;
-        const isValidToken = await bcrypt.compare(refreshToken, dbUser.refreshToken);
-        if (!isValidToken) {
-            throw new common_1.UnauthorizedException();
-        }
-        ;
+    async refreshTokens(refreshToken) {
+        const sub = await this.authValidator.validateRefreshTokens(refreshToken);
         const { access_token, refresh_token } = await this.generateTokens({ sub });
         const hashedRefreshToken = await bcrypt.hash(refresh_token, 10);
         await this.userRepository.update({ id: sub }, { refreshToken: hashedRefreshToken });
@@ -74,6 +57,7 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_repository_1.UserRepository,
-        jwt_service_1.AuthJwtService])
+        jwt_service_1.AuthJwtService,
+        auth_validator_service_1.AuthValidator])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

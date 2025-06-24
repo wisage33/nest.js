@@ -11,26 +11,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
-const swagger_1 = require("@nestjs/swagger");
 const jwt_service_1 = require("./services/jwt/jwt.service");
+const auth_validator_service_1 = require("./services/validator/auth-validator.service");
 let AuthGuard = class AuthGuard {
     authJwtService;
-    constructor(authJwtService) {
+    authValidator;
+    constructor(authJwtService, authValidator) {
         this.authJwtService = authJwtService;
+        this.authValidator = authValidator;
     }
-    canActivate(context) {
+    async canActivate(context) {
         const request = context.switchToHttp().getRequest();
         const token = this.extractTokenFromHeaders(request);
         if (!token) {
             throw new common_1.UnauthorizedException();
         }
-        try {
-            const payload = this.authJwtService.verifyAsync(token);
-            request['user'] = payload;
-        }
-        catch (error) {
-            throw new common_1.UnauthorizedException();
-        }
+        const payload = await this.authJwtService.verifyAsync(token);
+        const user = await this.authValidator.validateUserById(payload.sub);
+        request['user'] = {
+            ...user,
+            ...payload
+        };
         return true;
     }
     extractTokenFromHeaders(requset) {
@@ -40,8 +41,8 @@ let AuthGuard = class AuthGuard {
 };
 exports.AuthGuard = AuthGuard;
 exports.AuthGuard = AuthGuard = __decorate([
-    (0, swagger_1.ApiBasicAuth)(),
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [jwt_service_1.AuthJwtService])
+    __metadata("design:paramtypes", [jwt_service_1.AuthJwtService,
+        auth_validator_service_1.AuthValidator])
 ], AuthGuard);
 //# sourceMappingURL=auth.guard.js.map

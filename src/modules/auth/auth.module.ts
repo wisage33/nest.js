@@ -4,11 +4,12 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
 import { AuthJwtService } from './services/jwt/jwt.service';
+import { AuthValidator } from './services/validator/auth-validator.service';
 
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, AuthJwtService],
+  providers: [AuthService, AuthJwtService, AuthValidator],
   imports: [
     UserModule,
     JwtModule.register({

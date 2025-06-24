@@ -3,16 +3,18 @@ import { TokenResponseDTO } from './dto/token-response.dto';
 import { UserRepository } from 'src/modules/user/repository/user.repository';
 import { AuthJwtService } from './services/jwt/jwt.service';
 import { Payload } from './dto/payload.dto';
+import { AuthValidator } from './services/validator/auth-validator.service';
 export declare class AuthService {
     private readonly userRepository;
     private readonly authJwtService;
-    constructor(userRepository: UserRepository, authJwtService: AuthJwtService);
+    private readonly authValidator;
+    constructor(userRepository: UserRepository, authJwtService: AuthJwtService, authValidator: AuthValidator);
     signIn(loginDto: LoginDto): Promise<TokenResponseDTO>;
     generateTokens(payload: Payload): Promise<{
         access_token: string;
         refresh_token: string;
     }>;
-    refreshToken(refreshToken: string): Promise<{
+    refreshTokens(refreshToken: string): Promise<{
         access_token: string;
         refresh_token: string;
     }>;

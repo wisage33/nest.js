@@ -5,29 +5,20 @@ import { TokenResponseDTO } from './dto/token-response.dto';
 import { UserRepository } from 'src/modules/user/repository/user.repository';
 import { AuthJwtService } from './services/jwt/jwt.service';
 import { Payload } from './dto/payload.dto';
+import { AuthValidator } from './services/validator/auth-validator.service';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly authJwtService: AuthJwtService,
+        private readonly authValidator: AuthValidator
     ) {}
 
     async signIn(loginDto: LoginDto): Promise<TokenResponseDTO> {
+        const user = await this.authValidator.validateCredentials(loginDto);
 
-        const { login, password } = loginDto;
-        const dbUser = await this.userRepository.findUnique({ login });
-        if(!dbUser) {
-            throw new NotFoundException()
-        };
-
-        const validPassword = await bcrypt.compare(password, dbUser.password);
-
-        if(!validPassword) {
-            throw new UnauthorizedException("Password isn't valid")
-        };
-
-        const payload = { sub: dbUser.id };
+        const payload = { sub: user.id };
         const tokens = this.generateTokens(payload);
 
         const hashedRefreshToken = await bcrypt.hash((await tokens).refresh_token, 10);
@@ -48,22 +39,12 @@ export class AuthService {
         }
     }
 
-    async refreshToken(refreshToken: string) {
-        const {sub, payload} = this.authJwtService.decode(refreshToken);
-        const dbUser = await this.userRepository.findUnique({ id: sub });
-        if(!dbUser || !dbUser.refreshToken) {
-            throw new NotFoundException('Refresh token not found');
-        };
-
-        const isValidToken = await bcrypt.compare(refreshToken, dbUser.refreshToken)
-        if(!isValidToken) {
-            throw new UnauthorizedException();
-        };
-
+    async refreshTokens(refreshToken: string) {
+        const sub = await this.authValidator.validateRefreshTokens(refreshToken);
         const { access_token, refresh_token } = await this.generateTokens({ sub });
+
         const hashedRefreshToken = await bcrypt.hash(refresh_token, 10);
         await this.userRepository.update({ id: sub }, { refreshToken: hashedRefreshToken });
-
         return {
             access_token,
             refresh_token
