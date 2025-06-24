@@ -1,11 +1,11 @@
 import { PrismaService } from "../../../core/prisma/prisma.service";
-import { UserDto } from "../dto/user.dto";
-import { UserUpdateDto } from "../dto/user.update.dto";
+import { UserCreateDto } from "../dto/user-create.dto";
+import { UserUpdateDto } from "../dto/user-update.dto";
 import { Prisma } from "@prisma/client";
 export declare class UserRepository {
     private readonly prismaService;
     constructor(prismaService: PrismaService);
-    create(userDto: UserDto): Promise<{
+    create(userDto: UserCreateDto): Promise<{
         id: number;
         login: string;
         password: string;

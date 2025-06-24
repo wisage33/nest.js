@@ -9,10 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.JwtRepository = void 0;
+exports.AuthJwtService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-let JwtRepository = class JwtRepository {
+let AuthJwtService = class AuthJwtService {
     jwtService;
     constructor(jwtService) {
         this.jwtService = jwtService;
@@ -29,9 +29,9 @@ let JwtRepository = class JwtRepository {
         return this.jwtService.verifyAsync(payload);
     }
 };
-exports.JwtRepository = JwtRepository;
-exports.JwtRepository = JwtRepository = __decorate([
+exports.AuthJwtService = AuthJwtService;
+exports.AuthJwtService = AuthJwtService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_1.JwtService])
-], JwtRepository);
+], AuthJwtService);
 //# sourceMappingURL=jwt.service.js.map

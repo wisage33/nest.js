@@ -12,7 +12,7 @@ const user_service_1 = require("./user.service");
 const user_controller_1 = require("./user.controller");
 const user_repository_1 = require("./repository/user.repository");
 const prisma_module_1 = require("../../core/prisma/prisma.module");
-const jwt_service_1 = require("../auth/repository/jwt/jwt.service");
+const jwt_service_1 = require("../auth/services/jwt/jwt.service");
 let UserModule = class UserModule {
 };
 exports.UserModule = UserModule;
@@ -20,7 +20,7 @@ exports.UserModule = UserModule = __decorate([
     (0, common_1.Module)({
         imports: [prisma_module_1.PrismaModule],
         controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService, user_repository_1.UserRepository, jwt_service_1.JwtRepository],
+        providers: [user_service_1.UserService, user_repository_1.UserRepository, jwt_service_1.AuthJwtService],
         exports: [user_repository_1.UserRepository]
     })
 ], UserModule);

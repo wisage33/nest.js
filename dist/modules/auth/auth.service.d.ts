@@ -1,12 +1,12 @@
 import { LoginDto } from 'src/modules/auth/dto/login.dto';
 import { TokenResponseDTO } from './dto/token-response.dto';
 import { UserRepository } from 'src/modules/user/repository/user.repository';
-import { JwtRepository } from './repository/jwt/jwt.service';
+import { AuthJwtService } from './services/jwt/jwt.service';
 import { Payload } from './dto/payload.dto';
 export declare class AuthService {
     private readonly userRepository;
-    private readonly jwtRepository;
-    constructor(userRepository: UserRepository, jwtRepository: JwtRepository);
+    private readonly authJwtService;
+    constructor(userRepository: UserRepository, authJwtService: AuthJwtService);
     signIn(loginDto: LoginDto): Promise<TokenResponseDTO>;
     generateTokens(payload: Payload): Promise<{
         access_token: string;

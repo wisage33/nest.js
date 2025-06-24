@@ -10,19 +10,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
-const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
 const user_repository_1 = require("./repository/user.repository");
+const common_1 = require("@nestjs/common");
 let UserService = class UserService {
     userRepository;
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
-    async createUser(data) {
-        if (!data) {
-            throw new common_1.BadRequestException();
-        }
-        const { login, password } = data;
+    async userCreate(userCreateDto) {
+        const { login, password } = userCreateDto;
         const hashedPassword = await bcrypt.hash(password, 10);
         return this.userRepository.create({
             login,

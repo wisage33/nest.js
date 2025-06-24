@@ -3,14 +3,14 @@ import { LoginDto } from 'src/modules/auth/dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { TokenResponseDTO } from './dto/token-response.dto';
 import { UserRepository } from 'src/modules/user/repository/user.repository';
-import { JwtRepository } from './repository/jwt/jwt.service';
+import { AuthJwtService } from './services/jwt/jwt.service';
 import { Payload } from './dto/payload.dto';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly userRepository: UserRepository,
-        private readonly jwtRepository: JwtRepository,
+        private readonly authJwtService: AuthJwtService,
     ) {}
 
     async signIn(loginDto: LoginDto): Promise<TokenResponseDTO> {
@@ -38,8 +38,8 @@ export class AuthService {
 
     async generateTokens(payload: Payload) {
         const [access_token, refresh_token] = await Promise.all([
-            this.jwtRepository.signAsync(payload, "15m"),
-            this.jwtRepository.signAsync(payload, "7d")
+            this.authJwtService.signAsync(payload, "15m"),
+            this.authJwtService.signAsync(payload, "7d")
         ])
 
         return {
@@ -49,7 +49,7 @@ export class AuthService {
     }
 
     async refreshToken(refreshToken: string) {
-        const {sub, payload} = this.jwtRepository.decode(refreshToken);
+        const {sub, payload} = this.authJwtService.decode(refreshToken);
         const dbUser = await this.userRepository.findUnique({ id: sub });
         if(!dbUser || !dbUser.refreshToken) {
             throw new NotFoundException('Refresh token not found');
@@ -60,13 +60,13 @@ export class AuthService {
             throw new UnauthorizedException();
         };
 
-        const tokens = await this.generateTokens({ sub });
-        const hashedRefreshToken = await bcrypt.hash(tokens.refresh_token, 10);
+        const { access_token, refresh_token } = await this.generateTokens({ sub });
+        const hashedRefreshToken = await bcrypt.hash(refresh_token, 10);
         await this.userRepository.update({ id: sub }, { refreshToken: hashedRefreshToken });
 
         return {
-            access_token: tokens.access_token,
-            refresh_token: tokens.refresh_token
+            access_token,
+            refresh_token
         };
     }
 }

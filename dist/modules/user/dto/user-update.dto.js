@@ -16,4 +16,4 @@ class UserUpdateDto {
     }
 }
 exports.UserUpdateDto = UserUpdateDto;
-//# sourceMappingURL=user.update.dto.js.map
+//# sourceMappingURL=user-update.dto.js.map

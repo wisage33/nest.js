@@ -18,14 +18,14 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const auth_guard_1 = require("../auth/auth.guard");
 const swagger_1 = require("@nestjs/swagger");
-const user_dto_1 = require("./dto/user.dto");
+const user_create_dto_1 = require("./dto/user-create.dto");
 let UserController = class UserController {
     userService;
     constructor(userService) {
         this.userService = userService;
     }
-    async createUser(UserDto) {
-        return this.userService.createUser(UserDto);
+    async userCreate(userCreateDto) {
+        return this.userService.userCreate(userCreateDto);
     }
     async getProfile(req) {
         return req.user;
@@ -57,9 +57,9 @@ __decorate([
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_dto_1.UserDto]),
+    __metadata("design:paramtypes", [user_create_dto_1.UserCreateDto]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "createUser", null);
+], UserController.prototype, "userCreate", null);
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)('me'),

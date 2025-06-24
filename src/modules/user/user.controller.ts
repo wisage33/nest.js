@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { UserService } from './user.service';
 import { AuthGuard } from 'src/modules/auth/auth.guard';
 import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiParam, ApiProperty, ApiResponse } from '@nestjs/swagger';
-import { UserDto } from './dto/user.dto';
+import { UserCreateDto } from './dto/user-create.dto';
 
 
 @Controller('user')
@@ -30,8 +30,8 @@ export class UserController {
     description: "Bad request"
   })
   @Post('create')
-  async createUser(@Body() UserDto: UserDto) {
-    return this.userService.createUser(UserDto);
+  async userCreate(@Body() userCreateDto: UserCreateDto) {
+    return this.userService.userCreate(userCreateDto);
   }
 
   @UseGuards(AuthGuard)

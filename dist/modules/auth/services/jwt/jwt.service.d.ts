@@ -1,6 +1,6 @@
 import { JwtService } from "@nestjs/jwt";
 import { Payload } from "../../dto/payload.dto";
-export declare class JwtRepository {
+export declare class AuthJwtService {
     private readonly jwtService;
     constructor(jwtService: JwtService);
     decode(payload: any): any;
