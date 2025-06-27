@@ -1,13 +1,9 @@
 import { UserRepository } from 'src/modules/user/repository/user.repository';
 import { UserCreateDto } from './dto/user-create.dto';
+import { UserValidator } from './validator/user-validator.service';
 export declare class UserService {
     private readonly userRepository;
-    constructor(userRepository: UserRepository);
-    userCreate(userCreateDto: UserCreateDto): Promise<{
-        id: number;
-        login: string;
-        password: string;
-        createdAt: Date;
-        refreshToken: string | null;
-    }>;
+    private readonly userValidator;
+    constructor(userRepository: UserRepository, userValidator: UserValidator);
+    userCreate(userCreateDto: UserCreateDto): Promise<void>;
 }

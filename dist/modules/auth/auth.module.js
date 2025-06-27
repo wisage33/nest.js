@@ -12,8 +12,8 @@ const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const jwt_1 = require("@nestjs/jwt");
 const user_module_1 = require("../user/user.module");
-const jwt_service_1 = require("./services/jwt/jwt.service");
-const auth_validator_service_1 = require("./services/validator/auth-validator.service");
+const jwt_service_1 = require("./service/jwt/jwt.service");
+const auth_validator_service_1 = require("./service/validator/auth-validator.service");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -25,9 +25,9 @@ exports.AuthModule = AuthModule = __decorate([
             user_module_1.UserModule,
             jwt_1.JwtModule.register({
                 global: true,
-                secret: process.env.ACCESS_SECRET
-            })
-        ]
+                secret: process.env.ACCESS_SECRET,
+            }),
+        ],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

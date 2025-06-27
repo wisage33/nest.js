@@ -24,15 +24,14 @@ let AuthValidator = class AuthValidator {
     async validateUserByLogin(login) {
         const user = await this.userRepository.findUnique({ login });
         if (!user) {
-            throw new common_1.NotFoundException("User not found");
+            throw new common_1.NotFoundException('User not found');
         }
-        ;
         return user;
     }
     async validateUserById(id) {
         const user = await this.userRepository.findUnique({ id });
         if (!user) {
-            throw new common_1.NotFoundException("User not found");
+            throw new common_1.NotFoundException('User not found');
         }
         return user;
     }
@@ -44,26 +43,24 @@ let AuthValidator = class AuthValidator {
     }
     async validateRefreshTokens(refreshToken) {
         if (!refreshToken || typeof refreshToken !== 'string') {
-            throw new common_1.UnauthorizedException("Invalid refresh token");
+            throw new common_1.UnauthorizedException('Invalid refresh token');
         }
         const { sub, iat, exp } = await this.authJwtService.verifyAsync(refreshToken);
         const user = await this.userRepository.findUnique({ id: sub });
         if (!user || !user.refreshToken) {
-            throw new common_1.NotFoundException("Invalid credentials");
+            throw new common_1.NotFoundException('Invalid credentials');
         }
-        ;
         const isValidToken = await bcrypt.compare(refreshToken, user.refreshToken);
         if (!isValidToken) {
-            throw new common_1.UnauthorizedException("Refresh token is invalid");
+            throw new common_1.UnauthorizedException('Refresh token is invalid');
         }
         return sub;
     }
     async validationPassword(password, hashedPassword) {
         const isValidPassword = await bcrypt.compare(password, hashedPassword);
         if (!isValidPassword) {
-            throw new common_1.UnauthorizedException("Invalid password");
+            throw new common_1.UnauthorizedException('Invalid password');
         }
-        ;
         return true;
     }
 };

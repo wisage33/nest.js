@@ -28,7 +28,7 @@ let AuthController = class AuthController {
         res.cookie('refresh_token', refresh_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict'
+            sameSite: 'strict',
         });
         return { access_token };
     }
@@ -38,28 +38,28 @@ let AuthController = class AuthController {
         res.cookie('refresh_token', currentTokens.refresh_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict'
+            sameSite: 'strict',
         });
         return {
-            access_token: currentTokens.access_token
+            access_token: currentTokens.access_token,
         };
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: "Authentification and get jwt token" }),
+    (0, swagger_1.ApiOperation)({ summary: 'Authentification and get jwt token' }),
     (0, swagger_1.ApiResponse)({
         status: 404,
         example: {
             status: 404,
-            error: "Not found"
-        }
+            error: 'Not found',
+        },
     }),
     (0, swagger_1.ApiResponse)({
         status: 201,
         example: {
-            access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-        }
+            access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+        },
     }),
     (0, common_1.Post)('login'),
     openapi.ApiResponse({ status: 201 }),
@@ -70,6 +70,21 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Endpoint for refresh tokens ' }),
+    (0, swagger_1.ApiResponse)({
+        status: 404,
+        example: {
+            status: 404,
+            error: 'Not found',
+            message: 'User not found',
+        },
+    }),
+    (0, swagger_1.ApiResponse)({
+        status: 201,
+        example: {
+            access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+        },
+    }),
     (0, common_1.Get)('refresh'),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Req)()),

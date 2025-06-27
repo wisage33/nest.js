@@ -1,9 +1,9 @@
 import { LoginDto } from 'src/modules/auth/dto/login.dto';
 import { TokenResponseDTO } from './dto/token-response.dto';
 import { UserRepository } from 'src/modules/user/repository/user.repository';
-import { AuthJwtService } from './services/jwt/jwt.service';
+import { AuthJwtService } from './service/jwt/jwt.service';
 import { Payload } from './dto/payload.dto';
-import { AuthValidator } from './services/validator/auth-validator.service';
+import { AuthValidator } from './service/validator/auth-validator.service';
 export declare class AuthService {
     private readonly userRepository;
     private readonly authJwtService;

@@ -22,7 +22,7 @@ let AuthJwtService = class AuthJwtService {
     }
     signAsync(payload, expiresIn) {
         return this.jwtService.signAsync(payload, {
-            expiresIn
+            expiresIn,
         });
     }
     verifyAsync(payload) {

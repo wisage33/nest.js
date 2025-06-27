@@ -13,23 +13,29 @@ exports.UserService = void 0;
 const bcrypt = require("bcrypt");
 const user_repository_1 = require("./repository/user.repository");
 const common_1 = require("@nestjs/common");
+const user_validator_service_1 = require("./validator/user-validator.service");
 let UserService = class UserService {
     userRepository;
-    constructor(userRepository) {
+    userValidator;
+    constructor(userRepository, userValidator) {
         this.userRepository = userRepository;
+        this.userValidator = userValidator;
     }
     async userCreate(userCreateDto) {
         const { login, password } = userCreateDto;
         const hashedPassword = await bcrypt.hash(password, 10);
-        return this.userRepository.create({
+        const user = await this.userRepository.create({
             login,
-            password: hashedPassword
+            password: hashedPassword,
         });
+        const isUnique = await this.userValidator.checkUnique(user);
+        console.log(isUnique);
     }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_repository_1.UserRepository])
+    __metadata("design:paramtypes", [user_repository_1.UserRepository,
+        user_validator_service_1.UserValidator])
 ], UserService);
 //# sourceMappingURL=user.service.js.map

@@ -13,6 +13,7 @@ exports.TimeController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const time_service_1 = require("./time.service");
+const swagger_1 = require("@nestjs/swagger");
 let TimeController = class TimeController {
     timeService;
     constructor(timeService) {
@@ -24,6 +25,7 @@ let TimeController = class TimeController {
 };
 exports.TimeController = TimeController;
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Get current time by user' }),
     (0, common_1.Get)(),
     openapi.ApiResponse({ status: 200, type: Date }),
     __metadata("design:type", Function),

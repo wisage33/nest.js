@@ -1,5 +1,5 @@
-import { JwtService } from "@nestjs/jwt";
-import { Payload } from "../../dto/payload.dto";
+import { JwtService } from '@nestjs/jwt';
+import { Payload } from '../../dto/payload.dto';
 export declare class AuthJwtService {
     private readonly jwtService;
     constructor(jwtService: JwtService);

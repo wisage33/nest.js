@@ -1,5 +1,3 @@
 export class Payload {
-    constructor(
-        readonly sub: number
-    ) {}
+  constructor(readonly sub: number) {}
 }

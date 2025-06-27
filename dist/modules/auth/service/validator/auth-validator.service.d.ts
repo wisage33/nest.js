@@ -1,6 +1,6 @@
-import { UserRepository } from "src/modules/user/repository/user.repository";
-import { CredentialsDto } from "../../dto/credential.dto";
-import { AuthJwtService } from "../jwt/jwt.service";
+import { UserRepository } from 'src/modules/user/repository/user.repository';
+import { CredentialsDto } from '../../dto/credential.dto';
+import { AuthJwtService } from '../jwt/jwt.service';
 export declare class AuthValidator {
     private readonly userRepository;
     private readonly authJwtService;

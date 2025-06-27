@@ -17,22 +17,20 @@ let UserRepository = class UserRepository {
     constructor(prismaService) {
         this.prismaService = prismaService;
     }
-    ;
     async create(userDto) {
         return this.prismaService.user.create({
-            data: userDto
+            data: userDto,
         });
     }
-    ;
     async findUnique(where) {
         return this.prismaService.user.findUnique({
             where,
         });
     }
-    async update(where, userUpdateDto) {
+    async update(where, data) {
         return this.prismaService.user.update({
             where,
-            data: userUpdateDto
+            data,
         });
     }
 };

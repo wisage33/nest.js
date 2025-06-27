@@ -11,9 +11,6 @@ const common_1 = require("@nestjs/common");
 const user_module_1 = require("./modules/user/user.module");
 const time_module_1 = require("./modules/time/time.module");
 const prisma_module_1 = require("./core/prisma/prisma.module");
-const prisma_service_1 = require("./core/prisma/prisma.service");
-const user_service_1 = require("./modules/user/user.service");
-const time_service_1 = require("./modules/time/time.service");
 const auth_module_1 = require("./modules/auth/auth.module");
 const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
@@ -28,10 +25,9 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                envFilePath: './env'
-            })
+                envFilePath: './env',
+            }),
         ],
-        providers: [prisma_service_1.PrismaService, user_service_1.UserService, time_service_1.TimeService]
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

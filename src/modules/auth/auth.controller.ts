@@ -8,45 +8,66 @@ import { Request, Response } from 'express';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: "Authentification and get jwt token" })
+  @ApiOperation({ summary: 'Authentification and get jwt token' })
   @ApiResponse({
     status: 404,
     example: {
       status: 404,
-      error: "Not found"
-    }
+      error: 'Not found',
+    },
   })
   @ApiResponse({
     status: 201,
     example: {
-      access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-    }
+      access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+    },
   })
   @Post('login')
-  async signIn(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
-    const {access_token, refresh_token } = await this.authService.signIn(loginDto);
+  async signIn(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const { access_token, refresh_token } =
+      await this.authService.signIn(loginDto);
 
     res.cookie('refresh_token', refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict'
+      sameSite: 'strict',
     });
 
     return { access_token };
   }
-
+  @ApiOperation({ summary: 'Endpoint for refresh tokens ' })
+  @ApiResponse({
+    status: 404,
+    example: {
+      status: 404,
+      error: 'Not found',
+      message: 'User not found',
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    example: {
+      access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+    },
+  })
   @Get('refresh')
-  async refreshTokens(@Req() req: Request, @Res({ passthrough: true}) res: Response) {
-    const refreshToken = req.cookies['refresh_token'];
+  async refreshTokens(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const refreshToken: string = req.cookies['refresh_token'];
 
     const currentTokens = await this.authService.refreshTokens(refreshToken);
     res.cookie('refresh_token', currentTokens.refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict'
+      sameSite: 'strict',
     });
     return {
-      access_token: currentTokens.access_token
-    }
+      access_token: currentTokens.access_token,
+    };
   }
 }

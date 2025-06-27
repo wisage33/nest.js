@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_service_1 = require("./services/jwt/jwt.service");
-const auth_validator_service_1 = require("./services/validator/auth-validator.service");
+const jwt_service_1 = require("../service/jwt/jwt.service");
+const auth_validator_service_1 = require("../service/validator/auth-validator.service");
 let AuthGuard = class AuthGuard {
     authJwtService;
     authValidator;
@@ -30,13 +30,18 @@ let AuthGuard = class AuthGuard {
         const user = await this.authValidator.validateUserById(payload.sub);
         request['user'] = {
             ...user,
-            ...payload
+            ...payload,
         };
         return true;
     }
     extractTokenFromHeaders(requset) {
         const [type, token] = requset.headers.authorization?.split(' ') ?? [];
-        return type === 'Bearer' ? token : undefined;
+        switch (type) {
+            case 'bearer':
+                return token;
+            default:
+                return undefined;
+        }
     }
 };
 exports.AuthGuard = AuthGuard;

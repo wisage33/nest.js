@@ -1,7 +1,6 @@
-import { PrismaService } from "../../../core/prisma/prisma.service";
-import { UserCreateDto } from "../dto/user-create.dto";
-import { UserUpdateDto } from "../dto/user-update.dto";
-import { Prisma } from "@prisma/client";
+import { PrismaService } from '../../../core/prisma/prisma.service';
+import { UserCreateDto } from '../dto/user-create.dto';
+import { Prisma } from '@prisma/client';
 export declare class UserRepository {
     private readonly prismaService;
     constructor(prismaService: PrismaService);
@@ -19,7 +18,7 @@ export declare class UserRepository {
         createdAt: Date;
         refreshToken: string | null;
     } | null>;
-    update(where: Prisma.UserWhereUniqueInput, userUpdateDto: UserUpdateDto): Promise<{
+    update(where: Prisma.UserWhereUniqueInput, data: Prisma.UserUpdateInput): Promise<{
         id: number;
         login: string;
         password: string;

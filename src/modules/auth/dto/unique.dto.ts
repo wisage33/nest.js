@@ -1,6 +1,6 @@
 export class UniqueDto {
-    constructor(
-        readonly id?: number,
-        readonly login?: string
-    ) {}
+  constructor(
+    readonly id?: number,
+    readonly login?: string,
+  ) {}
 }

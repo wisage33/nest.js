@@ -3,9 +3,8 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '../user/user.module';
-import { AuthJwtService } from './services/jwt/jwt.service';
-import { AuthValidator } from './services/validator/auth-validator.service';
-
+import { AuthJwtService } from './service/jwt/jwt.service';
+import { AuthValidator } from './service/validator/auth-validator.service';
 
 @Module({
   controllers: [AuthController],
@@ -14,8 +13,8 @@ import { AuthValidator } from './services/validator/auth-validator.service';
     UserModule,
     JwtModule.register({
       global: true,
-      secret: process.env.ACCESS_SECRET
-    })
-  ]
+      secret: process.env.ACCESS_SECRET,
+    }),
+  ],
 })
 export class AuthModule {}

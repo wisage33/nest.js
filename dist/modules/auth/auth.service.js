@@ -13,8 +13,8 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
 const user_repository_1 = require("../user/repository/user.repository");
-const jwt_service_1 = require("./services/jwt/jwt.service");
-const auth_validator_service_1 = require("./services/validator/auth-validator.service");
+const jwt_service_1 = require("./service/jwt/jwt.service");
+const auth_validator_service_1 = require("./service/validator/auth-validator.service");
 let AuthService = class AuthService {
     userRepository;
     authJwtService;
@@ -34,12 +34,12 @@ let AuthService = class AuthService {
     }
     async generateTokens(payload) {
         const [access_token, refresh_token] = await Promise.all([
-            this.authJwtService.signAsync(payload, "15m"),
-            this.authJwtService.signAsync(payload, "7d")
+            this.authJwtService.signAsync(payload, '15m'),
+            this.authJwtService.signAsync(payload, '7d'),
         ]);
         return {
             access_token,
-            refresh_token
+            refresh_token,
         };
     }
     async refreshTokens(refreshToken) {
@@ -49,7 +49,7 @@ let AuthService = class AuthService {
         await this.userRepository.update({ id: sub }, { refreshToken: hashedRefreshToken });
         return {
             access_token,
-            refresh_token
+            refresh_token,
         };
     }
 };
