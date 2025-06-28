@@ -14,13 +14,14 @@ const jwt_1 = require("@nestjs/jwt");
 const user_module_1 = require("../user/user.module");
 const jwt_service_1 = require("./service/jwt/jwt.service");
 const auth_validator_service_1 = require("./service/validator/auth-validator.service");
+const auth_guard_1 = require("./guard/auth.guard");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, jwt_service_1.AuthJwtService, auth_validator_service_1.AuthValidator],
+        providers: [auth_service_1.AuthService, jwt_service_1.AuthJwtService, auth_validator_service_1.AuthValidator, auth_guard_1.AuthGuard],
         imports: [
             user_module_1.UserModule,
             jwt_1.JwtModule.register({
@@ -28,6 +29,11 @@ exports.AuthModule = AuthModule = __decorate([
                 secret: process.env.ACCESS_SECRET,
             }),
         ],
+        exports: [
+            auth_guard_1.AuthGuard,
+            jwt_service_1.AuthJwtService,
+            auth_validator_service_1.AuthValidator
+        ]
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

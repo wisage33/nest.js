@@ -22,7 +22,7 @@ let AuthGuard = class AuthGuard {
     }
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
-        const token = this.extractTokenFromHeaders(request);
+        const token = this.authJwtService.extractTokenFromHeaders(request);
         if (!token) {
             throw new common_1.UnauthorizedException();
         }
@@ -33,15 +33,6 @@ let AuthGuard = class AuthGuard {
             ...payload,
         };
         return true;
-    }
-    extractTokenFromHeaders(requset) {
-        const [type, token] = requset.headers.authorization?.split(' ') ?? [];
-        switch (type) {
-            case 'bearer':
-                return token;
-            default:
-                return undefined;
-        }
     }
 };
 exports.AuthGuard = AuthGuard;

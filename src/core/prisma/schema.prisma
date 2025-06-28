@@ -31,11 +31,11 @@ model Shop {
 
 model User {
   id                  Int           @id @default(autoincrement())
-  email               String        @unique
+  email               String?        @unique
   login               String?       @unique
   hashedPassword      String        
   shops               Shop[]
-  balance             Float
+  balance             Float?        @default(0)
   refreshToken        String?
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt

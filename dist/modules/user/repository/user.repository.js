@@ -17,14 +17,15 @@ let UserRepository = class UserRepository {
     constructor(prismaService) {
         this.prismaService = prismaService;
     }
-    async create(userDto) {
+    async create(data) {
         return this.prismaService.user.create({
-            data: userDto,
+            data
         });
     }
     async findUnique(where) {
+        console.log(where);
         return this.prismaService.user.findUnique({
-            where,
+            where
         });
     }
     async update(where, data) {

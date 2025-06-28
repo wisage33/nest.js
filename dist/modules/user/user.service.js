@@ -22,14 +22,15 @@ let UserService = class UserService {
         this.userValidator = userValidator;
     }
     async userCreate(userCreateDto) {
-        const { login, password } = userCreateDto;
+        const { email, login, password } = userCreateDto;
         const hashedPassword = await bcrypt.hash(password, 10);
+        await this.userValidator.checkUnique({ email, login });
         const user = await this.userRepository.create({
+            email,
             login,
-            password: hashedPassword,
+            hashedPassword,
         });
-        const isUnique = await this.userValidator.checkUnique(user);
-        console.log(isUnique);
+        return user;
     }
 };
 exports.UserService = UserService;

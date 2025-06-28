@@ -3,11 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserCreateDto = void 0;
 const openapi = require("@nestjs/swagger");
 class UserCreateDto {
-    login;
+    email;
     password;
-    constructor(login, password) {
-        this.login = login;
+    login;
+    constructor(email, password, login) {
+        this.email = email;
         this.password = password;
+        this.login = login;
     }
     static _OPENAPI_METADATA_FACTORY() {
         return {};

@@ -1,6 +1,7 @@
 export class UserCreateDto {
   constructor(
-    readonly login: string,
+    readonly email: string,
     readonly password: string,
+    readonly login?: string,
   ) {}
 }

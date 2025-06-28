@@ -1,5 +1,6 @@
 export declare class UserCreateDto {
-    readonly login: string;
+    readonly email: string;
     readonly password: string;
-    constructor(login: string, password: string);
+    readonly login?: string | undefined;
+    constructor(email: string, password: string, login?: string | undefined);
 }

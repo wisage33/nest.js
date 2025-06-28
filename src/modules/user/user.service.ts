@@ -12,13 +12,14 @@ export class UserService {
   ) {}
 
   async userCreate(userCreateDto: UserCreateDto) {
-    const { login, password } = userCreateDto;
+    const { email, login, password } = userCreateDto;
     const hashedPassword = await bcrypt.hash(password, 10);
+    await this.userValidator.checkUnique({ email, login });
     const user = await this.userRepository.create({
+      email,
       login,
-      password: hashedPassword,
+      hashedPassword,
     });
-    const isUnique = await this.userValidator.checkUnique(user);
-    console.log(isUnique)
+    return user;
   }
 }

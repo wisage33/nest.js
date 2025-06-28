@@ -1,3 +1,7 @@
+import { UserRepository } from '../repository/user.repository';
+import { UserDto } from '../dto/user.dto';
 export declare class UserValidator {
-    checkUnique(user: any): Promise<any>;
+    private readonly userRepository;
+    constructor(userRepository: UserRepository);
+    checkUnique(userDto: UserDto): Promise<void>;
 }

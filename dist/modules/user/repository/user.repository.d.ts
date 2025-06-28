@@ -1,28 +1,36 @@
 import { PrismaService } from '../../../core/prisma/prisma.service';
-import { UserCreateDto } from '../dto/user-create.dto';
 import { Prisma } from '@prisma/client';
 export declare class UserRepository {
     private readonly prismaService;
     constructor(prismaService: PrismaService);
-    create(userDto: UserCreateDto): Promise<{
+    create(data: Prisma.UserCreateInput): Promise<{
         id: number;
-        login: string;
-        password: string;
-        createdAt: Date;
+        email: string | null;
+        login: string | null;
+        hashedPassword: string;
+        balance: number | null;
         refreshToken: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findUnique(where: Prisma.UserWhereUniqueInput): Promise<{
         id: number;
-        login: string;
-        password: string;
-        createdAt: Date;
+        email: string | null;
+        login: string | null;
+        hashedPassword: string;
+        balance: number | null;
         refreshToken: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     } | null>;
     update(where: Prisma.UserWhereUniqueInput, data: Prisma.UserUpdateInput): Promise<{
         id: number;
-        login: string;
-        password: string;
-        createdAt: Date;
+        email: string | null;
+        login: string | null;
+        hashedPassword: string;
+        balance: number | null;
         refreshToken: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
 }

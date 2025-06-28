@@ -35,7 +35,7 @@ export class AuthValidator {
   async validateCredentials(credentialsDto: CredentialsDto) {
     const { login, password } = credentialsDto;
     const user = await this.validateUserByLogin(login);
-    this.validationPassword(password, user.password);
+    this.validationPassword(password, user.hashedPassword);
     return user;
   }
 

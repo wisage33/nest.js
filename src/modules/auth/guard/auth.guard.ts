@@ -2,10 +2,8 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ApiBasicAuth } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AuthJwtService } from '../service/jwt/jwt.service';
 import { AuthValidator } from '../service/validator/auth-validator.service';
@@ -19,7 +17,7 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
-    const token = this.extractTokenFromHeaders(request);
+    const token = this.authJwtService.extractTokenFromHeaders(request);
     if (!token) {
       throw new UnauthorizedException();
     }
@@ -35,13 +33,4 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 
-  private extractTokenFromHeaders(requset: Request): string | undefined {
-    const [type, token] = requset.headers.authorization?.split(' ') ?? [];
-    switch (type) {
-      case 'bearer':
-        return token;
-      default:
-        return undefined;
-    }
-  }
 }

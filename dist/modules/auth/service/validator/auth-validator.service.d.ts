@@ -7,24 +7,33 @@ export declare class AuthValidator {
     constructor(userRepository: UserRepository, authJwtService: AuthJwtService);
     validateUserByLogin(login: string): Promise<{
         id: number;
-        login: string;
-        password: string;
-        createdAt: Date;
+        email: string | null;
+        login: string | null;
+        hashedPassword: string;
+        balance: number | null;
         refreshToken: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     validateUserById(id: number): Promise<{
         id: number;
-        login: string;
-        password: string;
-        createdAt: Date;
+        email: string | null;
+        login: string | null;
+        hashedPassword: string;
+        balance: number | null;
         refreshToken: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     validateCredentials(credentialsDto: CredentialsDto): Promise<{
         id: number;
-        login: string;
-        password: string;
-        createdAt: Date;
+        email: string | null;
+        login: string | null;
+        hashedPassword: string;
+        balance: number | null;
         refreshToken: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     validateRefreshTokens(refreshToken: string): Promise<any>;
     validationPassword(password: string, hashedPassword: string): Promise<boolean>;

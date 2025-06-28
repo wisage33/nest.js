@@ -28,6 +28,15 @@ let AuthJwtService = class AuthJwtService {
     verifyAsync(payload) {
         return this.jwtService.verifyAsync(payload);
     }
+    extractTokenFromHeaders(request) {
+        const [type, token] = request.headers.authorization?.split(' ') ?? [];
+        switch (type) {
+            case 'Bearer':
+                return token;
+            default:
+                return undefined;
+        }
+    }
 };
 exports.AuthJwtService = AuthJwtService;
 exports.AuthJwtService = AuthJwtService = __decorate([

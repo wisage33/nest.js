@@ -10,19 +10,21 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const user_module_1 = require("./modules/user/user.module");
 const time_module_1 = require("./modules/time/time.module");
-const prisma_module_1 = require("./core/prisma/prisma.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const config_1 = require("@nestjs/config");
+const shop_module_1 = require("./modules/shop/shop.module");
+const core_module_1 = require("./core/core.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            shop_module_1.ShopModule,
             user_module_1.UserModule,
             time_module_1.TimeModule,
-            prisma_module_1.PrismaModule,
             auth_module_1.AuthModule,
+            core_module_1.CoreModule,
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 envFilePath: './env',
