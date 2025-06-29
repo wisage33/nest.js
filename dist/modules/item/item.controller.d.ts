@@ -6,38 +6,38 @@ export declare class ItemController {
     constructor(itemService: ItemService);
     create(req: any, shopId: number, itemCreateDto: itemCreateDto): Promise<{
         id: number;
-        name: string;
-        quantity: number;
-        price: number;
-        shopId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        price: number;
+        quantity: number;
+        shopId: number;
     }>;
     getItems(shopId: number): Promise<{
         id: number;
-        name: string;
-        quantity: number;
-        price: number;
-        shopId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        price: number;
+        quantity: number;
+        shopId: number;
     }[]>;
     updateItem(shopId: number, id: number, itemUpdateDto: ItemUpdateDto): Promise<{
         id: number;
-        name: string;
-        quantity: number;
-        price: number;
-        shopId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        price: number;
+        quantity: number;
+        shopId: number;
     }>;
     deleteItem(shopId: number, id: number): Promise<{
         id: number;
-        name: string;
-        quantity: number;
-        price: number;
-        shopId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        price: number;
+        quantity: number;
+        shopId: number;
     }>;
 }

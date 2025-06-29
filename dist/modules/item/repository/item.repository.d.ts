@@ -9,38 +9,38 @@ export declare class ItemRepository {
     } | null>;
     createItem(data: itemCreateDto, id: number): Promise<{
         id: number;
-        name: string;
         createdAt: Date;
         updatedAt: Date;
-        quantity: number;
+        name: string;
         price: number;
+        quantity: number;
         shopId: number;
     }>;
     getAllItems(shopId: number): Promise<{
         id: number;
-        name: string;
         createdAt: Date;
         updatedAt: Date;
-        quantity: number;
+        name: string;
         price: number;
+        quantity: number;
         shopId: number;
     }[]>;
     update(where: Prisma.ItemWhereUniqueInput, data: Prisma.ItemUpdateInput): Promise<{
         id: number;
-        name: string;
         createdAt: Date;
         updatedAt: Date;
-        quantity: number;
+        name: string;
         price: number;
+        quantity: number;
         shopId: number;
     }>;
     delete(where: Prisma.ItemWhereUniqueInput): Promise<{
         id: number;
-        name: string;
         createdAt: Date;
         updatedAt: Date;
-        quantity: number;
+        name: string;
         price: number;
+        quantity: number;
         shopId: number;
     }>;
 }

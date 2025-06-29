@@ -8,7 +8,7 @@ export declare class UserController {
         email: string | null;
         login: string | null;
         hashedPassword: string;
-        balance: number | null;
+        balance: number;
         refreshToken: string | null;
         createdAt: Date;
         updatedAt: Date;

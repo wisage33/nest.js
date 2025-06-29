@@ -4,16 +4,16 @@ export declare class ShopController {
     constructor(shopRepository: ShopRepository);
     createShop(req: any, shopDto: any): Promise<{
         id: number;
-        name: string;
-        userId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        userId: number;
     }>;
     deleteShop(id: number): Promise<{
         id: number;
-        name: string;
-        userId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        userId: number;
     }>;
 }

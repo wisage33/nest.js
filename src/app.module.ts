@@ -6,9 +6,11 @@ import { ConfigModule } from '@nestjs/config';
 import { ShopModule } from './modules/shop/shop.module';
 import { CoreModule } from './core/core.module';
 import { ItemModule } from './modules/item/item.module';
+import { PaymentModule } from './modules/payment/payment.module';
 
 @Module({
   imports: [
+    PaymentModule,
     ItemModule,
     ShopModule,
     UserModule,

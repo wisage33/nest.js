@@ -9,38 +9,38 @@ export declare class ItemService {
     constructor(itemRepository: ItemRepository, itemValidator: ItemValidator);
     createItem(itemCreateDto: itemCreateDto, shopId: number, userId: number): Promise<{
         id: number;
-        name: string;
-        quantity: number;
-        price: number;
-        shopId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        price: number;
+        quantity: number;
+        shopId: number;
     }>;
     getAllItems(shopId: number): Promise<{
         id: number;
-        name: string;
-        quantity: number;
-        price: number;
-        shopId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        price: number;
+        quantity: number;
+        shopId: number;
     }[]>;
     updateItem(dataUpdateDto: dataUpdateDto): Promise<{
         id: number;
-        name: string;
-        quantity: number;
-        price: number;
-        shopId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        price: number;
+        quantity: number;
+        shopId: number;
     }>;
     deleteItem(itemDeleteDto: itemDeleteDto): Promise<{
         id: number;
-        name: string;
-        quantity: number;
-        price: number;
-        shopId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        price: number;
+        quantity: number;
+        shopId: number;
     }>;
 }
