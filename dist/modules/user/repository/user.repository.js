@@ -19,7 +19,7 @@ let UserRepository = class UserRepository {
     }
     async create(data) {
         return this.prismaService.user.create({
-            data
+            data,
         });
     }
     async findUnique(where) {
@@ -27,8 +27,8 @@ let UserRepository = class UserRepository {
         return this.prismaService.user.findUnique({
             where,
             include: {
-                shops: true
-            }
+                shops: true,
+            },
         });
     }
     async update(where, data) {

@@ -20,7 +20,7 @@ let ItemValidator = class ItemValidator {
     async shopOwner(shopId, userId) {
         const shop = await this.itemRepository.findShop(shopId, userId);
         if (!shop) {
-            throw new common_1.ForbiddenException("You not owner");
+            throw new common_1.ForbiddenException('You not owner');
         }
         return shop;
     }

@@ -8,17 +8,17 @@ export class UserRepository {
 
   async create(data: Prisma.UserCreateInput) {
     return this.prismaService.user.create({
-      data
-    })
+      data,
+    });
   }
 
   async findUnique(where: Prisma.UserWhereUniqueInput) {
-    console.log(where)
+    console.log(where);
     return this.prismaService.user.findUnique({
       where,
       include: {
-        shops: true
-      }
+        shops: true,
+      },
     });
   }
 
@@ -31,5 +31,4 @@ export class UserRepository {
       data,
     });
   }
-
 }

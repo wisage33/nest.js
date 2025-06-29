@@ -1,6 +1,6 @@
-import { itemCreateDto } from "./dto/item-create.dto";
-import { ItemService } from "./item.service";
-import { ItemUpdateDto } from "./dto/item-update.dto";
+import { itemCreateDto } from './dto/item-create.dto';
+import { ItemService } from './item.service';
+import { ItemUpdateDto } from './dto/item-update.dto';
 export declare class ItemController {
     private readonly itemService;
     constructor(itemService: ItemService);

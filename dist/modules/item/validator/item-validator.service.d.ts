@@ -1,4 +1,4 @@
-import { ItemRepository } from "../repository/item.repository";
+import { ItemRepository } from '../repository/item.repository';
 export declare class ItemValidator {
     private readonly itemRepository;
     constructor(itemRepository: ItemRepository);

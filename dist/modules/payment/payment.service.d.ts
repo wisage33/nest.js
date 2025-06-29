@@ -1,7 +1,7 @@
-import { PaymentRepository } from "./repository/payment.repository";
-import { ReplishDto } from "./dto/replish.dto";
-import { UserRepository } from "../user/repository/user.repository";
-import { PurchaseItemDto } from "./dto/purchase-item.dto";
+import { PaymentRepository } from './repository/payment.repository';
+import { ReplishDto } from './dto/replish.dto';
+import { UserRepository } from '../user/repository/user.repository';
+import { PurchaseItemDto } from './dto/purchase-item.dto';
 export declare class PaymentService {
     private readonly PaymentRepository;
     private readonly UserRepositoru;
@@ -9,28 +9,28 @@ export declare class PaymentService {
     replish(replishDto: ReplishDto): Promise<{
         operation: {
             id: number;
+            createdAt: Date;
             userId: number;
             amount: number;
             itemId: number | null;
-            createdAt: Date;
         };
         updatedBalance: {
             id: number;
-            createdAt: Date;
             email: string | null;
             login: string | null;
             hashedPassword: string;
             balance: number;
             refreshToken: string | null;
+            createdAt: Date;
             updatedAt: Date;
         };
     }>;
     purchaseItem(purchaseItemDto: PurchaseItemDto): Promise<{
         id: number;
+        createdAt: Date;
         userId: number;
         amount: number;
         itemId: number | null;
-        createdAt: Date;
     }>;
     userHistory(userId: number): Promise<({
         item: {
@@ -38,15 +38,15 @@ export declare class PaymentService {
             createdAt: Date;
             updatedAt: Date;
             name: string;
-            quantity: number;
             price: number;
+            quantity: number;
             shopId: number;
         } | null;
     } & {
         id: number;
+        createdAt: Date;
         userId: number;
         amount: number;
         itemId: number | null;
-        createdAt: Date;
     })[]>;
 }

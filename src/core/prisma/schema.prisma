@@ -8,14 +8,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum deliveryStatus {
+  pending
+  onWay
+  delivered
+}
+
+model Delivery {
+  id         Int            @id @default(autoincrement())
+  purchase   Transaction    @relation(fields: [purchaseId], references: [id])
+  purchaseId Int            @unique
+  status     deliveryStatus @default(pending)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+}
+
 model Transaction {
-  id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
   userId    Int
   amount    Float
   item      Item?     @relation(fields: [itemId], references: [id])
   itemId    Int?
-  createdAt DateTime @default(now())
+  Delivery  Delivery?
+  createdAt DateTime  @default(now())
 }
 
 model Item {
@@ -46,7 +62,7 @@ model User {
   login          String?       @unique
   hashedPassword String
   shops          Shop[]
-  balance        Float        @default(0)
+  balance        Float         @default(0)
   refreshToken   String?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt

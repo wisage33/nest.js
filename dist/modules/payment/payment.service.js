@@ -22,9 +22,11 @@ let PaymentService = class PaymentService {
     }
     async replish(replishDto) {
         const operation = await this.PaymentRepository.create({ ...replishDto });
-        const updatedBalance = await this.UserRepositoru.update({ id: replishDto.userId }, { balance: {
-                increment: replishDto.amount
-            } });
+        const updatedBalance = await this.UserRepositoru.update({ id: replishDto.userId }, {
+            balance: {
+                increment: replishDto.amount,
+            },
+        });
         return { operation, updatedBalance };
     }
     async purchaseItem(purchaseItemDto) {

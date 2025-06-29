@@ -22,17 +22,23 @@ let ShopRepository = class ShopRepository {
             data: {
                 name,
                 owner: {
-                    connect: { id }
-                }
-            }
+                    connect: { id },
+                },
+            },
         });
         return shop;
     }
     async delete(id) {
         const result = await this.prismaService.shop.delete({
             where: {
-                id
+                id,
             },
+        });
+        return result;
+    }
+    async find(id) {
+        const result = await this.prismaService.shop.findUnique({
+            where: { id },
         });
         return result;
     }

@@ -20,7 +20,7 @@ exports.ItemModule = ItemModule = __decorate([
     (0, common_1.Module)({
         imports: [prisma_module_1.PrismaModule],
         providers: [item_service_1.ItemService, item_repository_1.ItemRepository, item_validator_service_1.ItemValidator],
-        controllers: [item_controller_1.ItemController]
+        controllers: [item_controller_1.ItemController],
     })
 ], ItemModule);
 //# sourceMappingURL=item.module.js.map

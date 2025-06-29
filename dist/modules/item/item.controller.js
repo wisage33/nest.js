@@ -41,15 +41,15 @@ let ItemController = class ItemController {
 exports.ItemController = ItemController;
 __decorate([
     (0, swagger_1.ApiBearerAuth)(),
-    (0, swagger_1.ApiOperation)({ summary: "Create items for shop" }),
+    (0, swagger_1.ApiOperation)({ summary: 'Create items for shop' }),
     (0, swagger_1.ApiBody)({
         schema: {
             example: {
                 name: 'bottle',
                 quantity: 0,
                 price: 0,
-            }
-        }
+            },
+        },
     }),
     (0, common_1.Post)(':shopId/items'),
     openapi.ApiResponse({ status: 201 }),

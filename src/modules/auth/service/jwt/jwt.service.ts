@@ -21,7 +21,6 @@ export class AuthJwtService {
     return this.jwtService.verifyAsync(payload);
   }
 
-
   extractTokenFromHeaders(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     switch (type) {

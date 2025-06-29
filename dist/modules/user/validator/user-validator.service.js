@@ -20,18 +20,18 @@ let UserValidator = class UserValidator {
     async checkUnique(userDto) {
         const { login, email } = userDto;
         const existsEmail = await this.userRepository.findUnique({
-            email
+            email,
         });
         if (existsEmail) {
-            throw new common_1.HttpException("Email exists", common_1.HttpStatus.CONFLICT);
+            throw new common_1.HttpException('Email exists', common_1.HttpStatus.CONFLICT);
         }
         if (!login)
             return;
         const existsLogin = await this.userRepository.findUnique({
-            login
+            login,
         });
         if (existsLogin) {
-            throw new common_1.HttpException("Login exists", common_1.HttpStatus.CONFLICT);
+            throw new common_1.HttpException('Login exists', common_1.HttpStatus.CONFLICT);
         }
     }
 };

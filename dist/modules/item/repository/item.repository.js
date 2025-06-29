@@ -21,11 +21,11 @@ let ItemRepository = class ItemRepository {
         const shop = await this.prismaService.shop.findUnique({
             where: {
                 id: shopId,
-                userId
+                userId,
             },
             select: {
-                id: true
-            }
+                id: true,
+            },
         });
         return shop;
     }
@@ -37,29 +37,29 @@ let ItemRepository = class ItemRepository {
                 price,
                 quantity,
                 shop: {
-                    connect: { id }
-                }
-            }
+                    connect: { id },
+                },
+            },
         });
     }
     async getAllItems(shopId) {
         const data = await this.prismaService.item.findMany({
             where: {
-                shopId
-            }
+                shopId,
+            },
         });
         return data;
     }
     async update(where, data) {
         const updatedItem = await this.prismaService.item.update({
             where,
-            data
+            data,
         });
         return updatedItem;
     }
     async delete(where) {
         const deletedItem = await this.prismaService.item.delete({
-            where
+            where,
         });
         return deletedItem;
     }

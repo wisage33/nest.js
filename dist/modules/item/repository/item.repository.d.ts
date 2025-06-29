@@ -1,6 +1,6 @@
-import { PrismaService } from "src/core/prisma/prisma.service";
-import { itemCreateDto } from "../dto/item-create.dto";
-import { Prisma } from "@prisma/client";
+import { PrismaService } from 'src/core/prisma/prisma.service';
+import { itemCreateDto } from '../dto/item-create.dto';
+import { Prisma } from '@prisma/client';
 export declare class ItemRepository {
     private readonly prismaService;
     constructor(prismaService: PrismaService);

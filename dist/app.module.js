@@ -16,12 +16,14 @@ const shop_module_1 = require("./modules/shop/shop.module");
 const core_module_1 = require("./core/core.module");
 const item_module_1 = require("./modules/item/item.module");
 const payment_module_1 = require("./modules/payment/payment.module");
+const delivery_module_1 = require("./modules/delivery/delivery.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            delivery_module_1.DeliveryModule,
             payment_module_1.PaymentModule,
             item_module_1.ItemModule,
             shop_module_1.ShopModule,

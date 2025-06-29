@@ -34,13 +34,13 @@ let ShopController = class ShopController {
 };
 exports.ShopController = ShopController;
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: "Create a shop for user" }),
+    (0, swagger_1.ApiOperation)({ summary: 'Create a shop for user' }),
     (0, swagger_1.ApiBody)({
         schema: {
             example: {
-                name: ""
-            }
-        }
+                name: '',
+            },
+        },
     }),
     (0, common_1.Post)('create'),
     openapi.ApiResponse({ status: 201 }),

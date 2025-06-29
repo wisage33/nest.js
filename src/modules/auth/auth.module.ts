@@ -17,10 +17,6 @@ import { AuthGuard } from './guard/auth.guard';
       secret: process.env.ACCESS_SECRET,
     }),
   ],
-  exports: [
-    AuthGuard,
-    AuthJwtService,
-    AuthValidator
-  ]
+  exports: [AuthGuard, AuthJwtService, AuthValidator],
 })
 export class AuthModule {}

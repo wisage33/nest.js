@@ -23,9 +23,9 @@ let PaymentRepository = class PaymentRepository {
             data: {
                 amount,
                 user: {
-                    connect: { id: userId }
+                    connect: { id: userId },
                 },
-            }
+            },
         });
     }
     async purchaseItem(purchaseItemDto) {
@@ -34,48 +34,53 @@ let PaymentRepository = class PaymentRepository {
             const quantity = purchaseItemDto.quantity;
             const item = await tx.item.findUnique({
                 where: { id: itemId },
-                include: { shop: true }
+                include: { shop: true },
             });
             if (!item) {
-                throw new common_1.NotFoundException("Item not found");
+                throw new common_1.NotFoundException('Item not found');
             }
             if (item.quantity < quantity) {
-                throw new common_1.BadRequestException("Quantity items goods is less than requested");
+                throw new common_1.BadRequestException('Quantity items goods is less than requested');
             }
             const user = await tx.user.findUnique({
-                where: { id: userId }
+                where: { id: userId },
             });
             if (!user) {
-                throw new common_1.NotFoundException("User not found");
+                throw new common_1.NotFoundException('User not found');
             }
             const purchaseAmount = item.price * quantity;
             if (user.balance != null && user.balance < purchaseAmount) {
-                throw new common_1.BadRequestException("Not enough funds");
+                throw new common_1.BadRequestException('Not enough funds');
             }
             const purchase = await tx.transaction.create({
                 data: {
                     user: {
-                        connect: { id: userId }
+                        connect: { id: userId },
                     },
                     item: {
-                        connect: { id: itemId }
+                        connect: { id: itemId },
                     },
-                    amount: purchaseAmount
-                }
+                    amount: purchaseAmount,
+                    Delivery: {
+                        create: {
+                            status: 'pending',
+                        },
+                    },
+                },
             });
             await tx.user.update({
                 where: { id: userId },
                 data: {
-                    balance: { decrement: purchaseAmount }
-                }
+                    balance: { decrement: purchaseAmount },
+                },
             });
             await tx.item.update({
                 where: {
-                    id: itemId
+                    id: itemId,
                 },
                 data: {
-                    quantity: { decrement: quantity }
-                }
+                    quantity: { decrement: quantity },
+                },
             });
             return purchase;
         });
@@ -84,14 +89,14 @@ let PaymentRepository = class PaymentRepository {
     async findAllTransactionsByUser(userId) {
         return this.prismaService.transaction.findMany({
             where: {
-                userId
+                userId,
             },
             orderBy: {
-                createdAt: 'desc'
+                createdAt: 'desc',
             },
             include: {
-                item: true
-            }
+                item: true,
+            },
         });
     }
 };

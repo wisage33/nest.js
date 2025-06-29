@@ -33,7 +33,7 @@ let ItemService = class ItemService {
         const { id, shopId, ...data } = dataUpdateDto;
         return this.itemRepository.update({
             id,
-            shopId
+            shopId,
         }, data);
     }
     async deleteItem(itemDeleteDto) {

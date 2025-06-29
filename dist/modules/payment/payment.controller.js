@@ -51,13 +51,13 @@ __decorate([
 ], PaymentController.prototype, "replishBalance", null);
 __decorate([
     (0, common_1.Post)(':itemId'),
-    (0, swagger_1.ApiOperation)({ summary: "Purchase item" }),
+    (0, swagger_1.ApiOperation)({ summary: 'Purchase item' }),
     (0, swagger_1.ApiBody)({
         schema: {
             example: {
-                quantity: 0
-            }
-        }
+                quantity: 0,
+            },
+        },
     }),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Request)()),

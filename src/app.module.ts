@@ -7,9 +7,11 @@ import { ShopModule } from './modules/shop/shop.module';
 import { CoreModule } from './core/core.module';
 import { ItemModule } from './modules/item/item.module';
 import { PaymentModule } from './modules/payment/payment.module';
+import { DeliveryModule } from './modules/delivery/delivery.module';
 
 @Module({
   imports: [
+    DeliveryModule,
     PaymentModule,
     ItemModule,
     ShopModule,

@@ -29,11 +29,7 @@ exports.AuthModule = AuthModule = __decorate([
                 secret: process.env.ACCESS_SECRET,
             }),
         ],
-        exports: [
-            auth_guard_1.AuthGuard,
-            jwt_service_1.AuthJwtService,
-            auth_validator_service_1.AuthValidator
-        ]
+        exports: [auth_guard_1.AuthGuard, jwt_service_1.AuthJwtService, auth_validator_service_1.AuthValidator],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

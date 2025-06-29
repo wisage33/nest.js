@@ -1,30 +1,35 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/core/prisma/prisma.service";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/core/prisma/prisma.service';
 
 @Injectable()
 export class ShopRepository {
-    constructor(
-        private readonly prismaService: PrismaService
-    ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
-    async create(id: number, name: string) {
-        const shop = await this.prismaService.shop.create({
-            data: {
-                name,
-                owner: {
-                    connect: { id }
-                }
-            }
-        })
-        return shop;
-    }
+  async create(id: number, name: string) {
+    const shop = await this.prismaService.shop.create({
+      data: {
+        name,
+        owner: {
+          connect: { id },
+        },
+      },
+    });
+    return shop;
+  }
 
-    async delete(id: number) {
-        const result = await this.prismaService.shop.delete({
-            where: {
-                id
-            },
-        });
-        return result;
-    }
+  async delete(id: number) {
+    const result = await this.prismaService.shop.delete({
+      where: {
+        id,
+      },
+    });
+    return result;
+  }
+
+  async find(id: number) {
+    const result = await this.prismaService.shop.findUnique({
+      where: { id },
+    });
+    return result;
+  }
 }
