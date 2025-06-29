@@ -9,38 +9,64 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepository = void 0;
+exports.ItemRepository = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../../core/prisma/prisma.service");
-let UserRepository = class UserRepository {
+let ItemRepository = class ItemRepository {
     prismaService;
     constructor(prismaService) {
         this.prismaService = prismaService;
     }
-    async create(data) {
-        return this.prismaService.user.create({
-            data
+    async findShop(shopId, userId) {
+        const shop = await this.prismaService.shop.findUnique({
+            where: {
+                id: shopId,
+                userId
+            },
+            select: {
+                id: true
+            }
         });
+        return shop;
     }
-    async findUnique(where) {
-        console.log(where);
-        return this.prismaService.user.findUnique({
-            where,
-            include: {
-                shops: true
+    async createItem(data, id) {
+        const { name, price, quantity } = data;
+        return this.prismaService.item.create({
+            data: {
+                name,
+                price,
+                quantity,
+                shop: {
+                    connect: { id }
+                }
             }
         });
     }
-    async update(where, data) {
-        return this.prismaService.user.update({
-            where,
-            data,
+    async getAllItems(shopId) {
+        const data = await this.prismaService.item.findMany({
+            where: {
+                shopId
+            }
         });
+        return data;
+    }
+    async update(where, data) {
+        const updatedItem = await this.prismaService.item.update({
+            where,
+            data
+        });
+        return updatedItem;
+    }
+    async delete(where) {
+        const deletedItem = await this.prismaService.item.delete({
+            where
+        });
+        return deletedItem;
     }
 };
-exports.UserRepository = UserRepository;
-exports.UserRepository = UserRepository = __decorate([
+exports.ItemRepository = ItemRepository;
+exports.ItemRepository = ItemRepository = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], UserRepository);
-//# sourceMappingURL=user.repository.js.map
+], ItemRepository);
+//# sourceMappingURL=item.repository.js.map

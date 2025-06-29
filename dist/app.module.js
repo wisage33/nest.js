@@ -14,12 +14,14 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const config_1 = require("@nestjs/config");
 const shop_module_1 = require("./modules/shop/shop.module");
 const core_module_1 = require("./core/core.module");
+const item_module_1 = require("./modules/item/item.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            item_module_1.ItemModule,
             shop_module_1.ShopModule,
             user_module_1.UserModule,
             time_module_1.TimeModule,

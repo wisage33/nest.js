@@ -5,9 +5,11 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ShopModule } from './modules/shop/shop.module';
 import { CoreModule } from './core/core.module';
+import { ItemModule } from './modules/item/item.module';
 
 @Module({
   imports: [
+    ItemModule,
     ShopModule,
     UserModule,
     TimeModule,

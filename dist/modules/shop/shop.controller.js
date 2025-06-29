@@ -28,8 +28,8 @@ let ShopController = class ShopController {
         const userId = req.user?.id;
         return this.shopRepository.create(userId, shopDto.name);
     }
-    async deleteShop(id, req) {
-        return this.shopRepository.delete(parseInt(id));
+    async deleteShop(id) {
+        return this.shopRepository.delete(id);
     }
 };
 exports.ShopController = ShopController;
@@ -53,10 +53,9 @@ __decorate([
 __decorate([
     (0, common_1.Delete)('delete/:id'),
     openapi.ApiResponse({ status: 200 }),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Request)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], ShopController.prototype, "deleteShop", null);
 exports.ShopController = ShopController = __decorate([

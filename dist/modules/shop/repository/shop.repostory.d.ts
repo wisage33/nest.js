@@ -4,16 +4,16 @@ export declare class ShopRepository {
     constructor(prismaService: PrismaService);
     create(id: number, name: string): Promise<{
         id: number;
-        name: string;
-        userId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        userId: number;
     }>;
     delete(id: number): Promise<{
         id: number;
-        name: string;
-        userId: number;
         createdAt: Date;
         updatedAt: Date;
+        name: string;
+        userId: number;
     }>;
 }

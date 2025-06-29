@@ -13,7 +13,15 @@ export declare class UserRepository {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    findUnique(where: Prisma.UserWhereUniqueInput): Promise<{
+    findUnique(where: Prisma.UserWhereUniqueInput): Promise<({
+        shops: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            userId: number;
+        }[];
+    } & {
         id: number;
         email: string | null;
         login: string | null;
@@ -22,7 +30,7 @@ export declare class UserRepository {
         refreshToken: string | null;
         createdAt: Date;
         updatedAt: Date;
-    } | null>;
+    }) | null>;
     update(where: Prisma.UserWhereUniqueInput, data: Prisma.UserUpdateInput): Promise<{
         id: number;
         email: string | null;

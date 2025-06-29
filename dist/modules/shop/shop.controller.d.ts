@@ -9,7 +9,7 @@ export declare class ShopController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    deleteShop(id: string, req: any): Promise<{
+    deleteShop(id: number): Promise<{
         id: number;
         name: string;
         userId: number;

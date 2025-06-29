@@ -5,13 +5,13 @@ export declare class UserController {
     constructor(userService: UserService);
     userCreate(userCreateDto: UserCreateDto): Promise<{
         id: number;
-        createdAt: Date;
-        updatedAt: Date;
         email: string | null;
         login: string | null;
         hashedPassword: string;
         balance: number | null;
         refreshToken: string | null;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     getProfile(req: any): Promise<any>;
 }

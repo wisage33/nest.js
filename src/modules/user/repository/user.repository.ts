@@ -15,7 +15,10 @@ export class UserRepository {
   async findUnique(where: Prisma.UserWhereUniqueInput) {
     console.log(where)
     return this.prismaService.user.findUnique({
-      where
+      where,
+      include: {
+        shops: true
+      }
     });
   }
 

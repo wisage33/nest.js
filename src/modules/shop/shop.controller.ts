@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Req, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Param, ParseIntPipe, Post, Req, Request, UseGuards } from "@nestjs/common";
 import { ShopRepository } from "./repository/shop.repostory";
 import { AuthGuard } from "../auth/guard/auth.guard";
 import { ApiBearerAuth, ApiBody, ApiOperation } from "@nestjs/swagger";
@@ -27,7 +27,7 @@ export class ShopController {
     }
 
     @Delete('delete/:id')
-    async deleteShop(@Param('id') id: string, @Request() req) {
-        return this.shopRepository.delete(parseInt(id));
+    async deleteShop(@Param('id', ParseIntPipe) id: number) {
+        return this.shopRepository.delete(id);
     }
 }

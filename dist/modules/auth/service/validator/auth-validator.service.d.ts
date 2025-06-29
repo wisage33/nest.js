@@ -6,6 +6,14 @@ export declare class AuthValidator {
     private readonly authJwtService;
     constructor(userRepository: UserRepository, authJwtService: AuthJwtService);
     validateUserByLogin(login: string): Promise<{
+        shops: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            userId: number;
+        }[];
+    } & {
         id: number;
         email: string | null;
         login: string | null;
@@ -16,6 +24,14 @@ export declare class AuthValidator {
         updatedAt: Date;
     }>;
     validateUserById(id: number): Promise<{
+        shops: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            userId: number;
+        }[];
+    } & {
         id: number;
         email: string | null;
         login: string | null;
@@ -26,6 +42,14 @@ export declare class AuthValidator {
         updatedAt: Date;
     }>;
     validateCredentials(credentialsDto: CredentialsDto): Promise<{
+        shops: {
+            id: number;
+            createdAt: Date;
+            updatedAt: Date;
+            name: string;
+            userId: number;
+        }[];
+    } & {
         id: number;
         email: string | null;
         login: string | null;
